@@ -35,7 +35,7 @@ module GemDocs
       task :readme => MD
 
       desc "Extract overview from README.org and embed in lib/<gem>.rb for ri/yard"
-      task :overview do
+      task :overview => ORG do
         print "Embedding overview extracted from #{GemDocs::ORG} into main gem file... "
         GemDocs::Overview.write_overview_to_lib
         puts "OK"
