@@ -9,4 +9,7 @@ require "rubocop/rake_task"
 
 RuboCop::RakeTask.new
 
+require_relative "lib/gem_docs"
+GemDocs.install
+
 task default: %i[spec rubocop]
