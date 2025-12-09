@@ -1,18 +1,17 @@
-- [Overview](#org37778a1)
-- [Contents](#org8ded922)
-- [Installation](#orgf945cb5)
-  - [Install the gem](#org49fb64e)
-  - [Update Your `Rakefile`](#org8404b2f)
-- [Usage](#orgc2f661a)
-  - [Generate `README.md` from `README.org`](#org7cb65a8)
-  - [Run the Code Blocks in README.org](#org62ed5b7)
-- [Development](#orga97c6fc)
-- [Contributing](#orgf840198)
-- [License](#org0a1a9e1)
+- [Overview](#org1879bbc)
+- [Installation](#org9b13de4)
+  - [Install the gem](#orgca3e855)
+  - [Update Your `Rakefile`](#orgb05a2f8)
+- [Usage](#orge69c06c)
+  - [Generate `README.md` from `README.org`](#orgf13d6c3)
+  - [Run the Code Blocks in README.org](#orga865cf2)
+- [Development](#org451bbbd)
+- [Contributing](#orgacd6ecb)
+- [License](#orgfbe6cab)
 
 
 
-<a id="org37778a1"></a>
+<a id="org1879bbc"></a>
 
 # Overview
 
@@ -26,26 +25,12 @@ Right now, it provides tasks for:
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="org8ded922"></a>
-
-# Contents     :toc:
-
--   
--   -   
-    -
--   -   
-    -
--   
--   
--   
-
-
-<a id="orgf945cb5"></a>
+<a id="org9b13de4"></a>
 
 # Installation
 
 
-<a id="org49fb64e"></a>
+<a id="orgca3e855"></a>
 
 ## Install the gem
 
@@ -62,7 +47,7 @@ gem install gem_docs
 ```
 
 
-<a id="org8404b2f"></a>
+<a id="orgb05a2f8"></a>
 
 ## Update Your `Rakefile`
 
@@ -74,12 +59,12 @@ GemDocs.install
 ```
 
 
-<a id="orgc2f661a"></a>
+<a id="orge69c06c"></a>
 
 # Usage
 
 
-<a id="org7cb65a8"></a>
+<a id="orgf13d6c3"></a>
 
 ## Generate `README.md` from `README.org`
 
@@ -92,7 +77,7 @@ rake docs:readme
 ```
 
 
-<a id="org62ed5b7"></a>
+<a id="orga865cf2"></a>
 
 ## Run the Code Blocks in README.org
 
@@ -103,7 +88,7 @@ rake docs:examples
 ```
 
 
-<a id="orga97c6fc"></a>
+<a id="org451bbbd"></a>
 
 # Development
 
@@ -112,14 +97,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`. To release a new version, update the version number in \`version.rb\`, and then run \`bundle exec rake release\`, which will create a git tag for the version, push git commits and the created tag, and push the \`.gem\` file to [rubygems.org](<https://rubygems.org>).
 
 
-<a id="orgf840198"></a>
+<a id="orgacd6ecb"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem-docs>.
 
 
-<a id="org0a1a9e1"></a>
+<a id="orgfbe6cab"></a>
 
 # License
 

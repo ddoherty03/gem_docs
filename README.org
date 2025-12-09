@@ -18,18 +18,6 @@ Right now, it provides tasks for:
 - copying the introductory contents of the README as a leading comment in your
   main gem library file so it gets picked up as an overview for ~ri~ and ~yri~
 
-* Contents                                                              :toc:
-- [[#overview][Overview]]
-- [[#installation][Installation]]
-  - [[#install-the-gem][Install the gem]]
-  - [[#update-your-rakefile][Update Your ~Rakefile~]]
-- [[#usage][Usage]]
-  - [[#generate-readmemd-from-readmeorg][Generate ~README.md~ from ~README.org~]]
-  - [[#run-the-code-blocks-in-readmeorg][Run the Code Blocks in README.org]]
-- [[#development][Development]]
-- [[#contributing][Contributing]]
-- [[#license][License]]
-
 * Installation
 
 ** Install the gem
