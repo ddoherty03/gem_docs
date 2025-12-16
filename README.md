@@ -1,17 +1,18 @@
-- [Overview](#org1879bbc)
-- [Installation](#org9b13de4)
-  - [Install the gem](#orgca3e855)
-  - [Update Your `Rakefile`](#orgb05a2f8)
-- [Usage](#orge69c06c)
-  - [Generate `README.md` from `README.org`](#orgf13d6c3)
-  - [Run the Code Blocks in README.org](#orga865cf2)
-- [Development](#org451bbbd)
-- [Contributing](#orgacd6ecb)
-- [License](#orgfbe6cab)
+- [Overview](#orga49241f)
+- [Installation](#org6a44949)
+  - [Install the gem](#orgfcd20ce)
+  - [Update Your `Rakefile`](#org2520e33)
+- [Usage](#orgaf33a08)
+  - [Generate `README.md` from `README.org`](#org99acf8a)
+  - [Run the Code Blocks in README.org](#org8031be9)
+  - [Generate an Overview Comment for the Main gem File](#orgc9be2fa)
+- [Development](#orgc93ec55)
+- [Contributing](#orgd73c1ad)
+- [License](#orga827c7f)
 
 
 
-<a id="org1879bbc"></a>
+<a id="orga49241f"></a>
 
 # Overview
 
@@ -25,12 +26,12 @@ Right now, it provides tasks for:
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="org9b13de4"></a>
+<a id="org6a44949"></a>
 
 # Installation
 
 
-<a id="orgca3e855"></a>
+<a id="orgfcd20ce"></a>
 
 ## Install the gem
 
@@ -47,7 +48,7 @@ gem install gem_docs
 ```
 
 
-<a id="orgb05a2f8"></a>
+<a id="org2520e33"></a>
 
 ## Update Your `Rakefile`
 
@@ -59,12 +60,12 @@ GemDocs.install
 ```
 
 
-<a id="orge69c06c"></a>
+<a id="orgaf33a08"></a>
 
 # Usage
 
 
-<a id="orgf13d6c3"></a>
+<a id="org99acf8a"></a>
 
 ## Generate `README.md` from `README.org`
 
@@ -77,7 +78,7 @@ rake docs:readme
 ```
 
 
-<a id="orga865cf2"></a>
+<a id="org8031be9"></a>
 
 ## Run the Code Blocks in README.org
 
@@ -88,7 +89,16 @@ rake docs:examples
 ```
 
 
-<a id="org451bbbd"></a>
+<a id="orgc9be2fa"></a>
+
+## Generate an Overview Comment for the Main gem File
+
+Gem's typically gather into a central library file all the require's and other setup needed for the gem and the file is given the same name as the gem. For example, this gem uses the file `lib/gem_docs.rb` for this purpose. Since this `lib` directory is placed in the user's `LOADPATH`, a `require 'gem_docs'` or `require '<gemname>'` effectively initializes the gem.
+
+By convention the first comment after the preliminary comments (such as `# frozen-string: true`) is used by `ri` as the overview for the gem.
+
+
+<a id="orgc93ec55"></a>
 
 # Development
 
@@ -97,14 +107,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`. To release a new version, update the version number in \`version.rb\`, and then run \`bundle exec rake release\`, which will create a git tag for the version, push git commits and the created tag, and push the \`.gem\` file to [rubygems.org](<https://rubygems.org>).
 
 
-<a id="orgacd6ecb"></a>
+<a id="orgd73c1ad"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem-docs>.
 
 
-<a id="orgfbe6cab"></a>
+<a id="orga827c7f"></a>
 
 # License
 

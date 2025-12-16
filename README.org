@@ -60,6 +60,16 @@ are set for evaluation:
  rake docs:examples
 #+end_src
 
+** Generate an Overview Comment for the Main gem File
+Gem's typically gather into a central library file all the require's and other
+setup needed for the gem and the file is given the same name as the gem.  For
+example, this gem uses the file =lib/gem_docs.rb= for this purpose.  Since
+this =lib= directory is placed in the user's =LOADPATH=, a =require
+'gem_docs'= or =require '<gemname>'= effectively initializes the gem.
+
+By convention the first comment after the preliminary comments (such as =#
+frozen-string: true=) is used by =ri= as the overview for the gem.
+
 * Development
 After checking out the repo, run `bin/setup` to install dependencies. Then,
 run `rake spec` to run the tests. You can also run `bin/console` for an
