@@ -23,7 +23,7 @@ module GemDocs
       <<~YOPTS
         --markup markdown
         --output-dir doc
-        README.md
+        --readme README.md
         lib/**/*.rb
       YOPTS
     end
