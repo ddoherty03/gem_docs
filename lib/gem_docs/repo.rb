@@ -2,10 +2,11 @@
 
 module GemDocs
   class Repo
-    attr_accessor :root, :user, :name
+    attr_accessor :root, :host, :user, :name
 
-    def initialize(root: nil, user: nil, name: nil)
+    def initialize(root: nil, host: nil, user: nil, name: nil)
       @root = root
+      @host = host
       @user = user
       @name = name
     end
@@ -22,13 +23,19 @@ module GemDocs
         abort "No repository URL found in gemspec metadata" unless url
 
         meta = parse_url(url)
-        new(root: File.dirname(File.expand_path(path)), user: meta[:user], name: meta[:name])
+        name = spec.name || meta[:name]
+        new(root: File.dirname(File.expand_path(path)), host: meta[:host], user: meta[:user], name: name)
       end
 
       private
 
+      # Return {host: <git_host>, user: <user_name>, name: <repo_name> } by parsing the given url
       def parse_url(url)
-        raise NotImplemented, "define .parse_url in subclass of Repo"
+        host_bases = ['github', 'gitlab']
+        md = url.match(%r{(?<host>(?:#{host_bases.join('|')})\.com)/(?<user>[^/]+)/(?<repo_name>[^/]+)(?:\.git)?/?})
+        abort "Unsupported repository URL: #{url}" unless md
+
+        { host: md[:host], user: md[:user], name: md[:repo_name] }
       end
 
       def gemspec_path
@@ -41,26 +48,6 @@ module GemDocs
       def load_gemspec(path)
         Gem::Specification.load(path) ||
           abort("Failed to load gemspec: #{path}")
-      end
-    end
-  end
-
-  class GitHubRepo < Repo
-    # Return {user: <user_name>, name: <repo_name> } by parsing the given url
-    def self.parse_url(url)
-      uri = url.strip
-
-      # Accept:
-      # https://github.com/user/repo
-      # https://github.com/user/repo.git
-      # git@github.com:user/repo.git
-      case uri
-      when %r{\Ahttps://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?\z}
-        { user: Regexp.last_match(1), name: Regexp.last_match(2) }
-      when %r{\Agit@github\.com:([^/]+)/([^/]+?)(?:\.git)?\z}
-        { user: Regexp.last_match(1), name: Regexp.last_match(2) }
-      else
-        abort "Unsupported repository URL: #{url}"
       end
     end
   end

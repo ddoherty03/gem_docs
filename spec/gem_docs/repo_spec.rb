@@ -2,10 +2,11 @@
 
 module GemDocs
   RSpec.describe Repo do
+    let(:gem_name) { 'fake_gem' }
     let(:fake_spec) do
       <<~RUBY
         Gem::Specification.new do |spec|
-          spec.name        = "fake_gem"
+          spec.name        = "#{gem_name}"
           spec.version     = "0.9.10"
           spec.summary     = "Fakes as a first-class data type"
           spec.authors     = ["Bruce Wayne"]
@@ -16,8 +17,6 @@ module GemDocs
         end
       RUBY
     end
-
-    let(:gem_name) { 'fake_gem' }
 
     around do |example|
       Dir.mktmpdir do |dir|
@@ -34,7 +33,7 @@ module GemDocs
     end
 
     describe ".from_gemspec" do
-      context "when only source_code_uri is present" do
+      context "when only github source_code_uri is present" do
         let(:metadata) do
           <<~META
             "source_code_uri" => "https://github.com/bwayne/fake_gem",
@@ -42,10 +41,28 @@ module GemDocs
         end
 
         it "extracts user and repo from source_code_uri" do
-          repo = GitHubRepo.from_gemspec
+          repo = Repo.from_gemspec
 
+          expect(repo.host).to eq("github.com")
           expect(repo.user).to eq("bwayne")
           expect(repo.name).to eq("fake_gem")
+        end
+      end
+
+      context "when only gitlab source_code_uri is present" do
+        let(:gem_name) { 'fake_gem0' }
+        let(:metadata) do
+          <<~META
+            "source_code_uri" => "https://gitlab.com/bwayne/#{gem_name}",
+          META
+        end
+
+        it "extracts user and repo from source_code_uri" do
+          repo = Repo.from_gemspec
+
+          expect(repo.host).to eq("gitlab.com")
+          expect(repo.user).to eq("bwayne")
+          expect(repo.name).to eq("fake_gem0")
         end
       end
 
@@ -57,7 +74,7 @@ module GemDocs
         end
 
         it "falls back to homepage_uri" do
-          repo = GitHubRepo.from_gemspec
+          repo = Repo.from_gemspec
 
           expect(repo.user).to eq("bwayne")
           expect(repo.name).to eq("fake_gem")
@@ -72,7 +89,7 @@ module GemDocs
         end
 
         it "strips the .git suffix" do
-          repo = GitHubRepo.from_gemspec
+          repo = Repo.from_gemspec
 
           expect(repo.name).to eq("fake_gem")
         end
@@ -86,7 +103,7 @@ module GemDocs
         end
 
         it "parses SSH URLs" do
-          repo = GitHubRepo.from_gemspec
+          repo = Repo.from_gemspec
 
           expect(repo.user).to eq("bwayne")
           expect(repo.name).to eq("fake_gem")
@@ -102,7 +119,7 @@ module GemDocs
 
         it "aborts with a helpful message" do
           expect {
-            GitHubRepo.from_gemspec
+            Repo.from_gemspec
           }.to raise_error(SystemExit, /No repository URL found/)
         end
       end
@@ -120,7 +137,7 @@ module GemDocs
 
         it "aborts with an unsupported URL message" do
           expect {
-            GitHubRepo.from_gemspec
+            Repo.from_gemspec
           }.to raise_error(SystemExit, /Unsupported repository URL/)
         end
       end
