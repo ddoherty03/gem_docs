@@ -86,9 +86,12 @@ module GemDocs
       end
 
       def gemspec_path
-        candidates = Dir["*.gemspec"]
-        abort "No gemspec found" if candidates.empty?
-        abort "Multiple gemspecs found: #{candidates.join(', ')}" if candidates.size > 1
+        candidates = nil
+        Dir.chdir(GemDocs.project_root) do
+          candidates = Dir["*.gemspec"]
+          abort "No gemspec found" if candidates.empty?
+          abort "Multiple gemspecs found: #{candidates.join(', ')}" if candidates.size > 1
+        end
         candidates.first
       end
 

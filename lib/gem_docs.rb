@@ -42,4 +42,11 @@ module GemDocs
   require_relative "gem_docs/yard"
   require_relative "gem_docs/badges"
   require_relative "gem_docs/tasks"
+
+  # Auto-detect project root (handles being run from subdirs)
+  def self.project_root
+    here = Dir.pwd
+    here = File.dirname(here) until !Dir['*.gemspec', 'Gemfile'].empty? || here == "/"
+    here
+  end
 end

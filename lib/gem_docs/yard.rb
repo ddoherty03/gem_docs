@@ -6,16 +6,7 @@ module GemDocs
 
     # Path to the .yardopts file in the project root
     def yardopts_path
-      File.expand_path(".yardopts", project_root)
-    end
-
-    # Auto-detect project root (handles being run from subdirs)
-    def project_root
-      @project_root ||= begin
-        here = Dir.pwd
-        here = File.dirname(here) until File.exist?(File.join(here, "Gemfile")) || here == "/"
-        here
-      end
+      File.expand_path(".yardopts", GemDocs.project_root)
     end
 
     # Contents of .yardopts
@@ -38,7 +29,7 @@ module GemDocs
     # Generate HTML documentation via YARD
     def generate
       write_yardopts
-      Dir.chdir(project_root) do
+      Dir.chdir(GemDocs.project_root) do
         unless system("yard", "doc", "--no-private")
           abort "Failed to generate YARD documentation"
         end
