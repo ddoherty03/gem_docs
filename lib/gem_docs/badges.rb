@@ -11,7 +11,6 @@ module GemDocs
     def ensure!
       repo = Repo.from_gemspec
       workflow = discover_workflow or return false
-
       badge = make_badge(repo, workflow)
       ensure_badge!(badge)
     end
@@ -50,7 +49,7 @@ module GemDocs
     def ensure_badge!(badge)
       content = File.read(README)
       updated =
-        if content.include?(badge.marker)
+        if content.lines.find { |l| l.match?(/\A\s*#{Regexp.quote(badge.marker)}/) }
           insert_at_marker(badge.marker, content, badge.org_block)
         elsif content.include?(badge.org_block)
           # Do nothing and return nil to indicate badge present
