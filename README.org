@@ -7,8 +7,8 @@
 #+PROPERTY: header-args:bash :exports code :eval no
 
 #+BEGIN_EXPORT markdown
-[![CI](https://github.com/ddoherty03/actions/workflows/main.yml/badge.svg)](
-https://github.com/ddoherty03/actions/workflows/main.yml
+[![CI](https://github.com/ddoherty03/gem-docs/actions/workflows/main.yml/badge.svg)](
+https://github.com/ddoherty03/gem-docs/actions/workflows/main.yml
 )
 #+END_EXPORT
 

@@ -65,8 +65,8 @@ module GemDocs
         #+PROPERTY: header-args:bash :exports code :eval no
 
         #+BEGIN_EXPORT markdown
-        [![CI](https://github.com/ded/actions/workflows/xxx.yml/badge.svg)](
-        https://github.com/ded/actions/workflows/xxx.yml
+        [![CI](https://github.com/ded/fake_gem/actions/workflows/xxx.yml/badge.svg?branch=master)](
+        https://github.com/ded/fake_gem/actions/workflows/xxx.yml
         )
         #+END_EXPORT
 
