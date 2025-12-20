@@ -295,7 +295,7 @@ module GemDocs
   require_relative "gem_docs/emacs"
   require_relative "gem_docs/overview"
   require_relative "gem_docs/yard"
-  require_relative "gem_docs/badges"
+  require_relative "gem_docs/badge"
   require_relative "gem_docs/tasks"
 
   # Auto-detect project root (handles being run from subdirs)
