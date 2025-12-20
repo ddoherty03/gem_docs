@@ -7,8 +7,9 @@
 #+PROPERTY: header-args:bash :exports code :eval no
 
 #+BEGIN_EXPORT markdown
-  ![main.yml](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg)
+  [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 #+END_EXPORT
+
 * Overview
 This gem contains ~rake~ tasks to facilitate the production of documentation
 in other gems.
