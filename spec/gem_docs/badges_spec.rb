@@ -151,7 +151,7 @@ module GemDocs
           Badges.ensure!
           post_run_readme = File.read("README.org")
 
-          expect(post_run_readme).to start_with("\#+BEGIN_EXPORT markdown")
+          expect(post_run_readme).to start_with("#+BEGIN_EXPORT markdown")
           expect(post_run_readme).to include("* Heading\n\nText")
         end
       end
