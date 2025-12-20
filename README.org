@@ -1,17 +1,14 @@
 #+TITLE: GemDocs Guide
 #+OPTIONS: toc:5
 #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
-#+PROPERTY: header-args:ruby :wrap example :session fat_fin_session
-#+PROPERTY: header-args:ruby+ :prologue "require_relative 'lib/fat_fin'" :eval yes
+#+PROPERTY: header-args:ruby :wrap example :session gem_docs_session
+#+PROPERTY: header-args:ruby+ :prologue "require_relative 'lib/gem_docs'" :eval yes
 #+PROPERTY: header-args:sh :exports code :eval no
 #+PROPERTY: header-args:bash :exports code :eval no
 
 #+BEGIN_EXPORT markdown
-[![CI](https://github.com/ddoherty03/actions/workflows/main.yml/badge.svg)](
-https://github.com/ddoherty03/actions/workflows/main.yml
-)
+  [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 #+END_EXPORT
-
 * Overview
 This gem contains ~rake~ tasks to facilitate the production of documentation
 in other gems.
