@@ -12,8 +12,8 @@
 - [Contributing](#org42f9ccd)
 - [License](#orgfb6025d)
 
-[![CI](https://github.com/ddoherty03/actions/workflows/main.yml/badge.svg)](
-https://github.com/ddoherty03/actions/workflows/main.yml
+[![CI](https://github.com/ddoherty03/gem-docs/actions/workflows/main.yml/badge.svg)](
+https://github.com/ddoherty03/gem-docs/actions/workflows/main.yml
 )
 
 
