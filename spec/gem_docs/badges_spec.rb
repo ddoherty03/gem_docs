@@ -55,6 +55,8 @@ module GemDocs
     end
 
     let(:readme_w_badge) do
+      repo = GemDocs::Repo.new(user: 'ded', name: 'fake_gem')
+      workflow = 'xxx.yml'
       <<~ORG
         #+TITLE: FatTable
         #+OPTIONS: toc:5
@@ -65,9 +67,7 @@ module GemDocs
         #+PROPERTY: header-args:bash :exports code :eval no
 
         #+BEGIN_EXPORT markdown
-        [![CI](https://github.com/ded/actions/workflows/xxx.yml/badge.svg)](
-        https://github.com/ded/actions/workflows/xxx.yml
-        )
+          [![CI](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow}/badge.svg)](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow})
         #+END_EXPORT
 
         * Introduction
@@ -124,7 +124,6 @@ module GemDocs
           Badges.ensure!
           post_post_run_readme = File.read("README.org")
 
-          # expect(result).to be false
           expect(pre_run_readme).to eq(post_run_readme)
           expect(post_run_readme).to eq(post_post_run_readme)
         end

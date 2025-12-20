@@ -26,9 +26,7 @@ module GemDocs
           marker: '#badge',
           org_block: <<~ORG,
             #+BEGIN_EXPORT markdown
-            [![CI](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow}/badge.svg?branch=#{repo.branch})](
-            https://github.com/#{repo.user}/actions/workflows/#{workflow}
-            )
+              [![CI](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow}/badge.svg)](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow})
             #+END_EXPORT
           ORG
         )
