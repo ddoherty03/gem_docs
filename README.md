@@ -14,6 +14,8 @@
 
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
+[[https://github.com/ddoherty03/fat_core/actions/workflows/ruby.yml][https://github.com/ddoherty03/fat_core/actions/workflows/ruby.yml/badge.svg?branch=master]]
+
 <a id="org36864b7"></a>
 
 # Overview

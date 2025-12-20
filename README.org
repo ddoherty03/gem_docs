@@ -6,6 +6,8 @@
 #+PROPERTY: header-args:sh :exports code :eval no
 #+PROPERTY: header-args:bash :exports code :eval no
 
+[[https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml][https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master]]
+
 #+BEGIN_EXPORT markdown
   [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 #+END_EXPORT
