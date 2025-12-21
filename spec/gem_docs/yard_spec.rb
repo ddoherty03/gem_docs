@@ -123,7 +123,7 @@ module GemDocs
         doc_dir = "./doc"
         expect(File).not_to exist(".yardopts")
         expect(File).not_to exist(doc_dir)
-        Yard.generate
+        Yard.generate(supress_out: true)
         expect(File).to exist(".yardopts")
         expect(File).to exist(File.join(doc_dir, 'index.html'))
       end

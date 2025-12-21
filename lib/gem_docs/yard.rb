@@ -3,10 +3,11 @@
 module GemDocs
   module Yard
     # Generate HTML documentation via YARD
-    def self.generate
+    def self.generate(supress_out: false)
       write_yardopts
       Dir.chdir(GemDocs.project_root) do
-        unless system("yard", "doc", "--no-private")
+        redirect = supress_out ? '>/dev/null 2>&1' : ''
+        unless system("yard doc --no-private #{redirect}")
           abort "Failed to generate YARD documentation"
         end
       end
