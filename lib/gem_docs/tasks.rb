@@ -13,7 +13,7 @@ module GemDocs
     # README.org → README.md when README.org is newer
     file MD => ORG do
       print "Exporting \"#{ORG}\" → "
-      GemDocs::Emacs.export_readme
+      GemDocs::Emacs.export
     end
 
     # Evaluate code blocks only when README.org changes
