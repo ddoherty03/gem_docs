@@ -1,21 +1,21 @@
-- [Overview](#org88287c7)
-- [Installation](#org83f39e9)
-  - [Install the gem](#org4c51141)
-  - [Update Your `Rakefile`](#org816be01)
-- [Usage of `gem_docs`](#orgacb3ed1)
-  - [Run the Code Blocks in README.org: \`rake docs:tangle\`](#org43911f7)
-  - [Ensure that a Badge is Present in `README.md`: \`rake docs:badge\`](#org49023ed)
-  - [Export `README.org` to `README.md`: \`rake docs:export\`](#orgb16b420)
-  - [Generate Yard Documents: \`rake docs:yard\`](#org920ef21)
-  - [Generate an Overview Comment for the Main gem File: \`rake docs:overview\`](#org0370905)
-- [Development](#org2f858ab)
-- [Contributing](#org8481f59)
-- [License](#orgf6b1c13)
+- [Overview](#orged106a3)
+- [Installation](#orgad2375f)
+  - [Install the gem](#orgb57e62d)
+  - [Update Your `Rakefile`](#orgea870b5)
+- [Usage of `gem_docs`](#org3451803)
+  - [Run the Code Blocks in README.org: \`rake docs:tangle\`](#orgc4f9199)
+  - [Ensure that a Badge is Present in `README.md`: \`rake docs:badge\`](#org5f614d0)
+  - [Export `README.org` to `README.md`: \`rake docs:export\`](#org6792f80)
+  - [Generate Yard Documents: \`rake docs:yard\`](#org99bf7d8)
+  - [Generate an Overview Comment for the Main gem File: \`rake docs:overview\`](#org6162d50)
+- [Development](#org084227f)
+- [Contributing](#orgbbdc491)
+- [License](#orgbbc8d85)
 
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
 
-<a id="org88287c7"></a>
+<a id="orged106a3"></a>
 
 # Overview
 
@@ -30,12 +30,12 @@ Right now, it provides tasks for:
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="org83f39e9"></a>
+<a id="orgad2375f"></a>
 
 # Installation
 
 
-<a id="org4c51141"></a>
+<a id="orgb57e62d"></a>
 
 ## Install the gem
 
@@ -52,7 +52,7 @@ gem install gem_docs
 ```
 
 
-<a id="org816be01"></a>
+<a id="orgea870b5"></a>
 
 ## Update Your `Rakefile`
 
@@ -64,12 +64,12 @@ GemDocs.install
 ```
 
 
-<a id="orgacb3ed1"></a>
+<a id="org3451803"></a>
 
 # Usage of `gem_docs`
 
 
-<a id="org43911f7"></a>
+<a id="orgc4f9199"></a>
 
 ## Run the Code Blocks in README.org: \`rake docs:tangle\`
 
@@ -82,7 +82,7 @@ rake docs:tangle
 ```
 
 
-<a id="org49023ed"></a>
+<a id="org5f614d0"></a>
 
 ## Ensure that a Badge is Present in `README.md`: \`rake docs:badge\`
 
@@ -93,7 +93,7 @@ If you want to place the badge somewhere else in you `README.org`, place the spe
 If there is already a badge present, the task will not modify the `README.org` file.
 
 
-<a id="orgb16b420"></a>
+<a id="org6792f80"></a>
 
 ## Export `README.org` to `README.md`: \`rake docs:export\`
 
@@ -108,7 +108,7 @@ rake docs:export
 ```
 
 
-<a id="org920ef21"></a>
+<a id="org99bf7d8"></a>
 
 ## Generate Yard Documents: \`rake docs:yard\`
 
@@ -119,7 +119,7 @@ rake docs:yard
 ```
 
 
-<a id="org0370905"></a>
+<a id="org6162d50"></a>
 
 ## Generate an Overview Comment for the Main gem File: \`rake docs:overview\`
 
@@ -132,7 +132,7 @@ rake docs:overview
 ```
 
 
-<a id="org2f858ab"></a>
+<a id="org084227f"></a>
 
 # Development
 
@@ -141,14 +141,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`.
 
 
-<a id="org8481f59"></a>
+<a id="orgbbdc491"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem-docs>.
 
 
-<a id="orgf6b1c13"></a>
+<a id="orgbbc8d85"></a>
 
 # License
 
