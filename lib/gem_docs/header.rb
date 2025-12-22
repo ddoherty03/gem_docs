@@ -44,13 +44,13 @@ module GemDocs
 
       def org_headers
         repo = Repo.from_gemspec
-        <<~HEADER
-          #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
-          #+PROPERTY: header-args:ruby+ :wrap example :session #{repo.name}_session :eval yes
-          #+PROPERTY: header-args:ruby+ :prologue "$:.unshift('./lib') unless $:.first == './lib'; require '#{repo.name}'"
-          #+PROPERTY: header-args:sh :exports code :eval no
-          #+PROPERTY: header-args:bash :exports code :eval no
-        HEADER
+        GemDocs.config.headers
+          .gsub('%n', repo.name)
+          .gsub('%h', repo.host)
+          .gsub('%u', repo.user)
+          .gsub('%r', repo.root)
+          .gsub('%b', repo.branch)
+          .gsub('%w', repo.workflow)
       end
     end
   end
