@@ -44,7 +44,7 @@ module GemDocs
           #
           # DateTime::
           #      an object of class Date, DateTime, or a string that matches
-          #      +/\d\d\d\d[-\/]\d\d?[-\/]\d\d?/+ and is parseable by DateTime.parse.
+          #      +/\d\d\d\d[-/]\d\d?[-/]\d\d?/+ and is parseable by DateTime.parse.
           #
           # Numeric:: on object that is of class Numeric, or a string that looks like
           #      a number after removing '+$+', '+,+', and '+_+' as well as Rationals
@@ -111,8 +111,8 @@ module GemDocs
           lib_dir = File.join(root, "lib/")
           FileUtils.mkdir_p(lib_dir)
           File.write(File.join(lib_dir, "fake_gem.rb"), fake_gem_lib)
-          File.write("Gemfile", "\#Empty")
-          File.write("README.md", "\#Empty")
+          File.write("Gemfile", "#Empty")
+          File.write("README.md", "#Empty")
           example.run
         end
       end

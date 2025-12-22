@@ -3,16 +3,15 @@
 module GemDocs
   class Repo
     attr_accessor :root, :host, :user, :name, :module_name
-    attr_accessor  :branch, :workflow_dir, :workflow_name
+    attr_accessor :branch, :workflow_dir, :workflow_name
 
     def initialize(root: nil, host: nil,
-                   user: nil,
-                   name: nil,
-                   module_name: nil,
-                   branch: 'master',
-                   workflow_dir: nil,
-                   workflow_name: nil
-                  )
+      user: nil,
+      name: nil,
+      module_name: nil,
+      branch: 'master',
+      workflow_dir: nil,
+      workflow_name: nil)
       @root = root
       @host = host
       @user = user

@@ -37,10 +37,6 @@ module GemDocs
     end
   end
 
-  def workflow
-
-  end
-
   def self.configure
     yield(config)
   end
