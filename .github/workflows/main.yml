@@ -26,6 +26,6 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Run rake tasks that don't need emacs
-        run:
-          - bundle exec rspec --exclude_pattern spec/gem_docs/emacs_spec.rb
-          - bundle exec rubocop
+        run: |
+          bundle exec rspec --exclude_pattern spec/gem_docs/emacs_spec.rb
+          bundle exec rubocop
