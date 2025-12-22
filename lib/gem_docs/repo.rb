@@ -3,18 +3,31 @@
 module GemDocs
   class Repo
     attr_accessor :root, :host, :user, :name, :branch
+    attr_accessor :workflow_dir, :workflow_name
 
-    def initialize(root: nil, host: nil, user: nil, name: nil, branch: 'master')
+    def initialize(root: nil, host: nil,
+                   user: nil,
+                   name: nil,
+                   branch: 'master',
+                   workflow_dir: nil,
+                   workflow_name: nil
+        )
       @root = root
       @host = host
       @user = user
       @name = name
       @branch = branch
+      @workflow_dir = workflow_dir
+      @workflow_name = workflow_name
+    end
+
+    def workflow
+      workflow_name.to_s
     end
 
     class << self
-      def from_gemspec(path = gemspec_path)
-        spec = load_gemspec(path)
+      def from_gemspec
+        spec = load_gemspec(gemspec_path)
 
         url =
           spec.metadata["source_code_uri"] ||
@@ -23,17 +36,55 @@ module GemDocs
 
         abort "No repository URL found in gemspec metadata" unless url
 
-        root = File.dirname(File.expand_path(path))
+        # root = File.dirname(File.expand_path(path))
+        root = GemDocs.project_root
         meta = parse_url(url)
-        name = spec.name || meta[:name]
-        branch = repo_default_branch(root:)
+        name = GemDocs.config.repo_name ||
+               spec.name ||
+               meta[:name] ||
+               File.basename(Dir['*.gemspec'].first) ||
+               File.basename(root)
+        host = GemDocs.config.repo_host ||
+               meta[:host]
+        user = GemDocs.config.repo_user ||
+               meta[:user]
+
+        branch = GemDocs.config.repo_branch ||
+                 repo_default_branch(root:)
+        wdir, wname = discover_workflow
         new(
           root: root,
-          host: meta[:host],
-          user: meta[:user],
+          host: host,
+          user: user,
           name: name,
           branch: branch,
+          workflow_dir: wdir,
+          workflow_name: wname,
         )
+      end
+
+      def discover_workflow
+        if GemDocs.config.repo_workflow_name && GemDocs.config.repo_workflow_dir
+          workflow_file = File.join(
+            GemDocs.project_root,
+            GemDocs.config.repo_workflow_dir,
+            GemDocs.config.repo_workflow_name,
+          )
+          return [File.dirname(workflow_file), File.dirname(workflow_file)] if File.readable?(workflow_file)
+        end
+
+        dir = File.join(GemDocs.project_root, ".github/workflows")
+        return unless Dir.exist?(dir)
+
+        workflows =
+          Dir.children(dir)
+            .select { |f| f.match?(/\A.+\.ya?ml\z/) }
+            .sort
+        return if workflows.empty?
+
+        fname = workflows.find { |f| f =~ /\A[A-Za-z][^\.]*\.ya?ml\z/i } || workflows.first
+        # File.join(dir, fname)
+        [dir, fname]
       end
 
       private

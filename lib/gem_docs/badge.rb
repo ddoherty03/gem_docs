@@ -10,39 +10,30 @@ module GemDocs
 
     def self.ensure!
       repo = Repo.from_gemspec
-      workflow = discover_workflow or return false
-      badge = make_badge(repo, workflow)
+      return false if repo.workflow.to_s.match?(/\A\s*\z/)
+
+      badge = make_badge(repo)
       ensure_badge!(badge, repo)
     end
 
     class << self
       private
 
-      # Create a Badge struct using the given repo and workflow name.
-      def make_badge(repo, workflow)
-        if repo.host.match?(/github/i)
-          Badge.new(
-            name:   'GitHub Actions',
-            marker: '#badge',
-            org_block: <<~ORG,
-              #+BEGIN_EXPORT markdown
-              [![CI](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow}/badge.svg?branch=#{repo.branch})](https://github.com/#{repo.user}/#{repo.name}/actions/workflows/#{workflow})
-              #+END_EXPORT
-            ORG
-          )
-        elsif repo.host.match?(/gitlab/i)
-          Badge.new(
-            name:   "GitLab CI",
-            marker: "#badge gitlab",
-            org_block: <<~ORG,
-              #+BEGIN_EXPORT markdown
-              [![pipeline status](https://gitlab.com/#{repo.user}/badges/#{branch}/pipeline.svg)](
-              https://gitlab.com/#{repo.user}/-/pipelines
-              )
-              #+END_EXPORT
-            ORG
-          )
-        end
+      def make_badge(repo)
+        repo = Repo.from_gemspec
+        org_block =
+          GemDocs.config.badge
+            .gsub('%n', repo.name)
+            .gsub('%h', repo.host)
+            .gsub('%u', repo.user)
+            .gsub('%r', repo.root)
+            .gsub('%b', repo.branch)
+            .gsub('%w', repo.workflow)
+        Badge.new(
+          name:   'GitHub Actions',
+          marker: '#badge',
+          org_block: org_block,
+        )
       end
 
       # Write the badge block to the README unless it's already there.  Replace
@@ -106,19 +97,6 @@ module GemDocs
             end
         end
         out_lines
-      end
-
-      def discover_workflow
-        dir = ".github/workflows"
-        return unless Dir.exist?(dir)
-
-        workflows =
-          Dir.children(dir)
-            .select { |f| f.match?(/\A.+\.ya?ml\z/) }
-            .sort
-        return if workflows.empty?
-
-        workflows.find { |f| f =~ /\A[A-Za-z][^\.]*\.ya?ml\z/i } || workflows.first
       end
     end
   end
