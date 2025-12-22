@@ -12,12 +12,30 @@
 
 
 * Overview
+One of the more onerous tasks when writing a ~gem~ or other ~github~ project
+is maintaining the documentation, and keeping it consistent and up-to-date.
+One of the better options for writing the ~README~ file that gets displayed by
+~github~ as the main documentation is to write the file in ~org-mode~,
+~README.org~ the export it to markdown ~README.md~ for display by ~github~.
+
+Doing so gives you access to ~org-mode~'s code blocks for writing example code
+to demonstrate the ~gem~ or other documents being presented.  If you do so,
+~github~ will render your ~README.org~ file in ~HTML~ and give you a credible
+result.  However, ~github~ cannot handle some ~org-mode~ features, and in
+particular, it will not render ~'#+RESULTS~ blocks showing the results of code
+block execution unless you wrap the results in something like a
+~#+begin_example~ block and manually delete the ~'#+RESULTS~ markers.
+Exporting to markdown eliminates that hassle.
+
 This gem contains ~rake~ tasks to facilitate the production of documentation
 in other gems.
 
-Right now, it provides tasks for:
+It provides tasks for:
 
-- running the code block examples in a ~README.org~
+- ensuring that proper code block setup is included in ~README.org~ to
+  facilitate running ~ruby~ code blocks in a session using the current version
+  of the library,
+- running the code block examples in a ~README.org~ by invoking ~emacsclient~,
 - exporting ~README.org~ to Git-flavored markdown in ~README.md~
 - ensuring a workflow or ci badge is present in the ~README.md~
 - generating yard documents for your repo, and
@@ -25,6 +43,13 @@ Right now, it provides tasks for:
   main gem library file so it gets picked up as an overview for ~ri~ and ~yri~
 
 * Installation
+** Install the ox-gfm Emacs package
+The export of ~README.org~ to ~README.md~ requires the ~ox-gfm~ package to be
+installed in Emacs.  If you use ~use-package~, this will suffice:
+
+#+begin_src emacs-lisp :eval no
+  (use-package ox-gfm)
+#+end_src
 
 ** Install the gem
 Install the gem and add to the application's ~Gemfile~ by executing:
@@ -45,7 +70,8 @@ To use this gem place the following lines in your gem's ~Rakefile~:
   GemDocs.install
 #+end_src
 
-* Usage of ~gem_docs~
+* Usage
+** Add proper ~#+PROPERTY~ headers in ~README.org~: `rake docs:headers`
 ** Run the Code Blocks in README.org: `rake docs:tangle`
 You can invoke ~emacsclient~ to run all the example code blocks in your
 ~README.org~ that are set for evaluation:

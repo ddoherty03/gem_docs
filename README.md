@@ -1,41 +1,59 @@
-- [Overview](#orged106a3)
-- [Installation](#orgad2375f)
-  - [Install the gem](#orgb57e62d)
-  - [Update Your `Rakefile`](#orgea870b5)
-- [Usage of `gem_docs`](#org3451803)
-  - [Run the Code Blocks in README.org: \`rake docs:tangle\`](#orgc4f9199)
-  - [Ensure that a Badge is Present in `README.md`: \`rake docs:badge\`](#org5f614d0)
-  - [Export `README.org` to `README.md`: \`rake docs:export\`](#org6792f80)
-  - [Generate Yard Documents: \`rake docs:yard\`](#org99bf7d8)
-  - [Generate an Overview Comment for the Main gem File: \`rake docs:overview\`](#org6162d50)
-- [Development](#org084227f)
-- [Contributing](#orgbbdc491)
-- [License](#orgbbc8d85)
+- [Overview](#orgd52888f)
+- [Installation](#orgd5bbede)
+  - [Install the ox-gfm Emacs package](#org3920409)
+  - [Install the gem](#org0f218e1)
+  - [Update Your `Rakefile`](#org40cbe96)
+- [Usage](#org32113b7)
+  - [Add proper `#+PROPERTY` headers in `README.org`: \`rake docs:headers\`](#orgff01eed)
+  - [Run the Code Blocks in README.org: \`rake docs:tangle\`](#org7672d93)
+  - [Ensure that a Badge is Present in `README.md`: \`rake docs:badge\`](#orgc5383ea)
+  - [Export `README.org` to `README.md`: \`rake docs:export\`](#orge84f0cd)
+  - [Generate Yard Documents: \`rake docs:yard\`](#org3bffbc8)
+  - [Generate an Overview Comment for the Main gem File: \`rake docs:overview\`](#org4588c51)
+- [Development](#orgf0cd137)
+- [Contributing](#org68546e5)
+- [License](#orgb7f51cd)
 
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
 
-<a id="orged106a3"></a>
+<a id="orgd52888f"></a>
 
 # Overview
 
+One of the more onerous tasks when writing a `gem` or other `github` project is maintaining the documentation, and keeping it consistent and up-to-date. One of the better options for writing the `README` file that gets displayed by `github` as the main documentation is to write the file in `org-mode`, `README.org` the export it to markdown `README.md` for display by `github`.
+
+Doing so gives you access to `org-mode`'s code blocks for writing example code to demonstrate the `gem` or other documents being presented. If you do so, `github` will render your `README.org` file in `HTML` and give you a credible result. However, `github` cannot handle some `org-mode` features, and in particular, it will not render `'#+RESULTS` blocks showing the results of code block execution unless you wrap the results in something like a `#+begin_example` block and manually delete the `'#+RESULTS` markers. Exporting to markdown eliminates that hassle.
+
 This gem contains `rake` tasks to facilitate the production of documentation in other gems.
 
-Right now, it provides tasks for:
+It provides tasks for:
 
--   running the code block examples in a `README.org`
+-   ensuring that proper code block setup is included in `README.org` to facilitate running `ruby` code blocks in a session using the current version of the library,
+-   running the code block examples in a `README.org` by invoking `emacsclient`,
 -   exporting `README.org` to Git-flavored markdown in `README.md`
 -   ensuring a workflow or ci badge is present in the `README.md`
 -   generating yard documents for your repo, and
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="orgad2375f"></a>
+<a id="orgd5bbede"></a>
 
 # Installation
 
 
-<a id="orgb57e62d"></a>
+<a id="org3920409"></a>
+
+## Install the ox-gfm Emacs package
+
+The export of `README.org` to `README.md` requires the `ox-gfm` package to be installed in Emacs. If you use `use-package`, this will suffice:
+
+```emacs-lisp
+(use-package ox-gfm)
+```
+
+
+<a id="org0f218e1"></a>
 
 ## Install the gem
 
@@ -52,7 +70,7 @@ gem install gem_docs
 ```
 
 
-<a id="orgea870b5"></a>
+<a id="org40cbe96"></a>
 
 ## Update Your `Rakefile`
 
@@ -64,12 +82,17 @@ GemDocs.install
 ```
 
 
-<a id="org3451803"></a>
+<a id="org32113b7"></a>
 
-# Usage of `gem_docs`
+# Usage
 
 
-<a id="orgc4f9199"></a>
+<a id="orgff01eed"></a>
+
+## Add proper `#+PROPERTY` headers in `README.org`: \`rake docs:headers\`
+
+
+<a id="org7672d93"></a>
 
 ## Run the Code Blocks in README.org: \`rake docs:tangle\`
 
@@ -82,7 +105,7 @@ rake docs:tangle
 ```
 
 
-<a id="org5f614d0"></a>
+<a id="orgc5383ea"></a>
 
 ## Ensure that a Badge is Present in `README.md`: \`rake docs:badge\`
 
@@ -93,7 +116,7 @@ If you want to place the badge somewhere else in you `README.org`, place the spe
 If there is already a badge present, the task will not modify the `README.org` file.
 
 
-<a id="org6792f80"></a>
+<a id="orge84f0cd"></a>
 
 ## Export `README.org` to `README.md`: \`rake docs:export\`
 
@@ -108,7 +131,7 @@ rake docs:export
 ```
 
 
-<a id="org99bf7d8"></a>
+<a id="org3bffbc8"></a>
 
 ## Generate Yard Documents: \`rake docs:yard\`
 
@@ -119,7 +142,7 @@ rake docs:yard
 ```
 
 
-<a id="org6162d50"></a>
+<a id="org4588c51"></a>
 
 ## Generate an Overview Comment for the Main gem File: \`rake docs:overview\`
 
@@ -132,7 +155,7 @@ rake docs:overview
 ```
 
 
-<a id="org084227f"></a>
+<a id="orgf0cd137"></a>
 
 # Development
 
@@ -141,14 +164,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`.
 
 
-<a id="orgbbdc491"></a>
+<a id="org68546e5"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem-docs>.
 
 
-<a id="orgbbc8d85"></a>
+<a id="orgb7f51cd"></a>
 
 # License
 
