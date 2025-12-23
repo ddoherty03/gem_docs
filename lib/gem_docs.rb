@@ -25,9 +25,9 @@ require "fileutils"
 # to demonstrate the ~gem~ or other documents being presented.  If you do so,
 # ~github~ will render your ~README.org~ file in ~HTML~ and give you a credible
 # result.  However, ~github~ cannot handle some ~org-mode~ features, and in
-# particular, it will not render `~#+RESULTS~` blocks showing the results of code
+# particular, it will not render ~#+RESULTS~ blocks showing the results of code
 # block execution unless you wrap the results in something like a
-# `#+begin_example` block and manually delete the `#+RESULTS` markers.
+# ~#+begin_example~ block and manually delete the ~#+RESULTS~ markers.
 # Exporting to markdown eliminates that hassle.
 #
 # This gem contains ~rake~ tasks to facilitate the production of documentation
@@ -47,7 +47,17 @@ require "fileutils"
 #
 # * Usage
 #
-# ** Add proper ~#+PROPERTY~ headers in ~README.org~: `rake docs:headers`
+# ** Create a skeleton README.org file
+# This is a simple task that creates a bare-bones ~README.org~ file to get
+# started with.  It does create the file with the name of the gem and other repo
+# detains filled in.  If there is already a README.org file, it does nothing.
+#
+# #+begin_src ruby :eval no
+#  rake docs:skeleton
+# #+end_src
+#
+# ** Add proper ~#+PROPERTY~ headers in ~README.org~: ~rake docs:headers~
+# **
 # Getting emacs code blocks to render well in your ~README.org~ takes proper
 # configuration of the code block headers in Emacs.
 #
@@ -83,7 +93,7 @@ require "fileutils"
 # - ~:dir "./"~ :: causes each code block to execute with your gem's root
 #   directory as its current directory.
 # - ~:wrap example~ :: this wraps the result of code block evaluation in
-#   `~#+begin_example~` / `~#+end_example~` so that the results are displayed
+#   ~#+begin_example~ / ~#+end_example~ so that the results are displayed
 #   literally.
 # - ~:session gem_docs_session~ :: causes the code blocks to execute in a
 #   continuous session, so that variables set up in one code block are
@@ -141,7 +151,7 @@ require "fileutils"
 # easily demonstrate your gem's code in this way is the real killer feature of
 # writing your ~README~ in ~org-mode~ then exporting to markdown.
 #
-# ** Run the Code Blocks in README.org: `rake docs:tangle`
+# ** Run the Code Blocks in README.org: ~rake docs:tangle~
 # You can invoke ~emacsclient~ to run all the example code blocks in your
 # ~README.org~ that are set for evaluation:
 #
@@ -164,7 +174,7 @@ require "fileutils"
 #  rake docs:tangle
 # #+end_src
 #
-# ** Ensure that a Badge is Present in ~README.md~: `rake docs:badge`
+# ** Ensure that a Badge is Present in ~README.md~: ~rake docs:badge~
 # It is reassuring to consumers of your gem that your gem passes its workflow
 # tests on github.  This task checks to see if a "badge" indicating success or
 # failure is present and, if not, inserts one at the top of the ~README.org~
@@ -177,7 +187,7 @@ require "fileutils"
 # If there is already a badge present, the task will not modify the ~README.org~
 # file.
 #
-# ** Export ~README.org~ to ~README.md~: `rake docs:export`
+# ** Export ~README.org~ to ~README.md~: ~rake docs:export~
 # You can write the ~README~ in Emacs org-mode, using all its features
 # including the execution of code blocks, and then export to git-flavored
 # markdown.
@@ -202,7 +212,7 @@ require "fileutils"
 #   rake docs:export
 # #+end_src
 #
-# ** Generate Yard Documents: `rake docs:yard`
+# ** Generate Yard Documents: ~rake docs:yard~
 # This task generates a suitable ~.yardopts~ file if none exists and then
 # generates ~yard~ documents into the gem's ~doc~ directory.  It also makes sure
 # that ~yard~ knows about your ~README.md~ file so user's of your gem will be
@@ -212,7 +222,7 @@ require "fileutils"
 #   rake docs:yard
 # #+end_src
 #
-# ** Generate an Overview Comment for the Main gem File: `rake docs:overview`
+# ** Generate an Overview Comment for the Main gem File: ~rake docs:overview~
 # Gem's typically gather into a central library file all the require's and other
 # setup needed for the gem and the file is given the same name as the gem.  For
 # example, this gem uses the file =lib/gem_docs.rb= for this purpose.  Since
@@ -239,6 +249,7 @@ module GemDocs
   require_relative "gem_docs/yard"
   require_relative "gem_docs/badge"
   require_relative "gem_docs/header"
+  require_relative "gem_docs/skeleton"
   require_relative "gem_docs/tasks"
 
   README_ORG = "README.org"
