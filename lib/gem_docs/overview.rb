@@ -83,7 +83,7 @@ module GemDocs
         scanner = StringScanner.new(text)
         heads.each do |h|
           if scanner.scan_until(/\n(?<head>\s*\*\s+#{Regexp.escape(h)})[^\n]*\n/)
-            this_head = scanner.named_captures['head'] + "\n\n"
+            this_head = scanner.named_captures['head'] + "\n"
             body_start = scanner.pos
             body_end =
               if scanner.scan_until(/\n^\s*\*[^\*\n]+/)
@@ -95,7 +95,7 @@ module GemDocs
             result << this_head + scanner.string[body_start..body_end]
           end
         end
-        result
+        result.sub(/\A\n*/, '')
       end
     end
   end

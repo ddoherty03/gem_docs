@@ -150,7 +150,17 @@ module GemDocs
 
         it "adds the overview to the lib file" do
           expect(Overview).not_to be_present
-          Overview.write_overview?
+          expect(Overview.write_overview?).to be true
+          expect(Overview).to be_present
+        end
+      end
+
+      context "when there is no overview or module in lib yet" do
+        let(:main_lib) { main_lib_wo_module }
+
+        it "adds the overview to the lib file" do
+          expect(Overview).not_to be_present
+          expect(Overview.write_overview?).to be true
           expect(Overview).to be_present
         end
       end
@@ -160,7 +170,7 @@ module GemDocs
 
         it "does not add an additional overview" do
           expect(Overview).to be_present
-          Overview.write_overview?
+          expect(Overview.write_overview?).to be false
           expect(Overview).to be_present
         end
       end
