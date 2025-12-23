@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Daniel E. Doherty"]
   spec.email = ["ded@ddoherty.net"]
   spec.summary       = "Documentation automation for Ruby gems"
-  spec.description   = "Shared tasks for README.org execution, GFM export, YARD integration (future), etc."
+  spec.description   = "Shared tasks for README.org code block execution, markdown export, YARD integration, etc."
   spec.homepage = "https://github.com/ddoherty03/gem_docs"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.2.0"
@@ -18,5 +18,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "rake"
-  spec.add_dependency "yard", "~> 0.9"
+  spec.add_dependency "yard"
 end
