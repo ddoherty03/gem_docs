@@ -9,7 +9,7 @@ module GemDocs
       return false if present?
 
       prelim, body = extract_prelim_body
-      new_org = prelim.join.strip + org_headers.strip + "\n\n" + body.join
+      new_org = prelim.join.strip + "\n" + org_headers.strip + "\n\n" + body.join
       File.write(README_ORG, new_org) > 0
     end
 
@@ -32,9 +32,6 @@ module GemDocs
             body << line
           elsif in_prelim && (line.match(/^#/) || line.match(/^\s*$/))
             prelim << line
-          # elsif in_prelim
-          #   in_prelim = false
-          #   body << line
           else
             body << line
           end
