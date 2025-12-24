@@ -17,11 +17,45 @@ module GemDocs
       RUBY
     end
 
+    let(:lib_square) do
+      <<~RUBY
+        module FakeGem
+          def self.table
+            result = []
+            result << ['N', 'N Squared']
+            result << nil
+            1.upto(20) do |k|
+              result << [k, k**2]
+            end
+            result
+          end
+        end
+      RUBY
+    end
+
+    let(:lib_cube) do
+      <<~RUBY
+        module FakeGem
+          def self.table
+            result = []
+            result << ['N', 'N Cubed']
+            result << nil
+            1.upto(20) do |k|
+              result << [k, k**3]
+            end
+            result
+          end
+        end
+      RUBY
+    end
+
+    let(:lib) { lib_square }
+
     let(:readme) do
       <<~ORG
         #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
         #+PROPERTY: header-args:ruby :wrap example :session fake_gem_session
-        #+PROPERTY: header-args:ruby+ :prologue "require_relative 'lib/fat_fin'" :eval yes
+        #+PROPERTY: header-args:ruby+ :prologue "require_relative 'lib/fake_gem'" :eval yes
         #+PROPERTY: header-args:sh :exports code :eval no
         #+PROPERTY: header-args:bash :exports code :eval no
         #+TITLE: FakeGem
@@ -30,46 +64,72 @@ module GemDocs
         Some text here.
 
         #+begin_src ruby
-          result = []
-          result << ['Head1', 'Head2']
-          result << nil
-          1.upto(20) do |k|
-            result << [k, k**3]
-          end
-          result
+          FakeGem.table
         #+end_src
       ORG
     end
 
-    let(:results) do
+    let(:results_square) do
       <<~RESULT
         #+RESULTS:
         #+begin_example
-        | Head1 | Head2 |
-        |-------+-------|
-        |     1 |     1 |
-        |     2 |     8 |
-        |     3 |    27 |
-        |     4 |    64 |
-        |     5 |   125 |
-        |     6 |   216 |
-        |     7 |   343 |
-        |     8 |   512 |
-        |     9 |   729 |
-        |    10 |  1000 |
-        |    11 |  1331 |
-        |    12 |  1728 |
-        |    13 |  2197 |
-        |    14 |  2744 |
-        |    15 |  3375 |
-        |    16 |  4096 |
-        |    17 |  4913 |
-        |    18 |  5832 |
-        |    19 |  6859 |
-        |    20 |  8000 |
+        |  N | N Squared |
+        |----+-----------|
+        |  1 |         1 |
+        |  2 |         4 |
+        |  3 |         9 |
+        |  4 |        16 |
+        |  5 |        25 |
+        |  6 |        36 |
+        |  7 |        49 |
+        |  8 |        64 |
+        |  9 |        81 |
+        | 10 |       100 |
+        | 11 |       121 |
+        | 12 |       144 |
+        | 13 |       169 |
+        | 14 |       196 |
+        | 15 |       225 |
+        | 16 |       256 |
+        | 17 |       289 |
+        | 18 |       324 |
+        | 19 |       361 |
+        | 20 |       400 |
         #+end_example
       RESULT
     end
+
+    let(:results_cube) do
+      <<~RESULT
+        #+RESULTS:
+        #+begin_example
+        |  N | N Cubed |
+        |----+---------|
+        |  1 |       1 |
+        |  2 |       8 |
+        |  3 |      27 |
+        |  4 |      64 |
+        |  5 |     125 |
+        |  6 |     216 |
+        |  7 |     343 |
+        |  8 |     512 |
+        |  9 |     729 |
+        | 10 |    1000 |
+        | 11 |    1331 |
+        | 12 |    1728 |
+        | 13 |    2197 |
+        | 14 |    2744 |
+        | 15 |    3375 |
+        | 16 |    4096 |
+        | 17 |    4913 |
+        | 18 |    5832 |
+        | 19 |    6859 |
+        | 20 |    8000 |
+        #+end_example
+      RESULT
+    end
+
+    let(:results) { results_square }
 
     around do |example|
       Dir.mktmpdir do |dir|
@@ -77,6 +137,9 @@ module GemDocs
         Dir.chdir(root) do
           File.write(File.join(root, "fake_gem.gemspec"), fake_spec)
           File.write(File.join(root, "README.org"), readme)
+          lib_dir = File.join(root, "lib/")
+          FileUtils.mkdir_p(lib_dir)
+          File.write(File.join(lib_dir, "fake_gem.rb"), lib)
 
           example.run
         end
@@ -117,6 +180,23 @@ module GemDocs
           post_contents = File.read("README.org")
           expect(post_contents).to match(/\#\+RESULTS/)
           expect(post_contents).to include(results)
+        end
+      end
+
+      context 'when the library file is changed' do
+        it 'runs the code blocks in a new session' do
+          pre_contents = File.read("README.org")
+          expect(pre_contents).not_to match(/^\s*#+RESULTS/)
+          Emacs.tangle
+          post_contents = File.read("README.org")
+          expect(post_contents).to match(/\#\+RESULTS/)
+          expect(post_contents).to include(results)
+          # Now change the lib to produce cubed table
+          File.write(File.join('./lib', "fake_gem.rb"), lib_cube)
+          Emacs.tangle
+          post_contents = File.read("README.org")
+          expect(post_contents).to match(/\#\+RESULTS/)
+          expect(post_contents).to include(results_cube)
         end
       end
 
