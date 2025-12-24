@@ -11,10 +11,7 @@ require "fileutils"
 
 # Gem Overview (extracted from README.org by gem_docs)
 #
-#
-#
 # * Overview
-#
 # One of the more onerous tasks when writing a ~gem~ or other ~github~ project
 # is maintaining the documentation, and keeping it consistent and up-to-date.
 # One of the better options for writing the ~README~ file that gets displayed by
@@ -46,7 +43,6 @@ require "fileutils"
 #   main gem library file so it gets picked up as an overview for ~ri~ and ~yri~
 #
 # * Usage
-#
 # ** Create a skeleton README.org file
 # This is a simple task that creates a bare-bones ~README.org~ file to get
 # started with.  It does create the file with the name of the gem and other repo
@@ -57,7 +53,6 @@ require "fileutils"
 # #+end_src
 #
 # ** Add proper ~#+PROPERTY~ headers in ~README.org~: ~rake docs:headers~
-# **
 # Getting emacs code blocks to render well in your ~README.org~ takes proper
 # configuration of the code block headers in Emacs.
 #
@@ -113,7 +108,13 @@ require "fileutils"
 # the gem, etc.  Of course, you can override this for particular code blocks.
 #
 # Those headers are in fact what I am using in this ~README~, and here is how
-# they work:
+# they work.
+#
+# *** Output Tables
+# You can build table for ~org~ to display in the output by returning an array
+# of arrays, which org-mode renders as a table in the output.  You can add an
+# hline to the output table by simply adding ~nil~ to the outer array where you
+# want the hline to occur.
 #
 # #+begin_src ruby
 #   result = []
@@ -142,10 +143,25 @@ require "fileutils"
 # | 3.3333333333333335 |  28.03162489452614 |
 # #+end_example
 #
-# I built the table in the output by returning an array of arrays, which
-# org-mode renders as a table in the output.  Notice that I added an hline to
-# the output by simply adding ~nil~ to the outer array where I wanted the hline
-# to occur.
+# *** Output Values
+# Sometimes, however, you just want the result of the code block evaluated
+# without building a table.  To do so, just set the block header to ~:results
+# value raw~.
+#
+# To compute the value of an $1,000 asset gaining 5% continuously compounding
+# interest over four years, you might do this:
+#
+# #+begin_src ruby :results value raw
+#   rate = 0.05
+#   time = 4
+#   principal = 1000
+#   principal * Math.exp(rate * time)
+# #+end_src
+#
+# #+RESULTS:
+# #+begin_example
+# 1221.40275816017
+# #+end_example
 #
 # Apart from all the convenient markup that ~org-mode~ allows, the ability to
 # easily demonstrate your gem's code in this way is the real killer feature of
@@ -173,6 +189,11 @@ require "fileutils"
 # #+begin_src ruby :eval no
 #  rake docs:tangle
 # #+end_src
+#
+# With the default headers provided by `rake docs:headers`, the buffer is
+# evaluated in a session so that code blocks can build on one another.  However,
+# `docs:tangle` kills any existing session buffer before it runs so that each
+# buffer evaluation is independent of earlier runs.
 #
 # ** Ensure that a Badge is Present in ~README.md~: ~rake docs:badge~
 # It is reassuring to consumers of your gem that your gem passes its workflow

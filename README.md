@@ -1,25 +1,27 @@
-- [Overview](#org068e526)
-- [Installation](#orgfa5cdf7)
-  - [Install the ox-gfm Emacs package](#orgd39b695)
-  - [Install the gem](#org174eac6)
-  - [Update Your `Rakefile`](#org149f5f0)
-- [Usage](#orgba004e7)
-  - [Create a skeleton README.org file](#org9fafbb5)
-  - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#orgeac62e1)
-  - [Run the Code Blocks in README.org: `rake docs:tangle`](#org96ef358)
-  - [Ensure that a Badge is Present in `README.md`: `rake docs:badge`](#org46a5a5d)
-  - [Export `README.org` to `README.md`: `rake docs:export`](#org195fa2c)
-  - [Generate Yard Documents: `rake docs:yard`](#org89721f1)
-  - [Generate an Overview Comment for the Main gem File: `rake docs:overview`](#orgf18ec62)
-- [Confguration](#org9ad84cd)
-- [Development](#org4961bff)
-- [Contributing](#org69c53e6)
-- [License](#org13c747d)
+- [Overview](#org0a45629)
+- [Installation](#org4ca2e9f)
+  - [Install the ox-gfm Emacs package](#orge111580)
+  - [Install the gem](#org2064b48)
+  - [Update Your `Rakefile`](#orgf91c446)
+- [Usage](#org82f870d)
+  - [Create a skeleton README.org file](#org42188e6)
+  - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#org890242f)
+    - [Output Tables](#org1377ed6)
+    - [Output Values](#org6c552b8)
+  - [Run the Code Blocks in README.org: `rake docs:tangle`](#org6dbfe55)
+  - [Ensure that a Badge is Present in `README.md`: `rake docs:badge`](#orge79d61d)
+  - [Export `README.org` to `README.md`: `rake docs:export`](#orgf0bce84)
+  - [Generate Yard Documents: `rake docs:yard`](#org82829ee)
+  - [Generate an Overview Comment for the Main gem File: `rake docs:overview`](#org6af456b)
+- [Configuration](#org0d04101)
+- [Development](#org3a892b5)
+- [Contributing](#org4bca7b7)
+- [License](#orgcd7604f)
 
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
 
-<a id="org068e526"></a>
+<a id="org0a45629"></a>
 
 # Overview
 
@@ -39,12 +41,12 @@ It provides tasks for:
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="orgfa5cdf7"></a>
+<a id="org4ca2e9f"></a>
 
 # Installation
 
 
-<a id="orgd39b695"></a>
+<a id="orge111580"></a>
 
 ## Install the ox-gfm Emacs package
 
@@ -55,7 +57,7 @@ The export of `README.org` to `README.md` requires the `ox-gfm` package to be in
 ```
 
 
-<a id="org174eac6"></a>
+<a id="org2064b48"></a>
 
 ## Install the gem
 
@@ -72,7 +74,7 @@ gem install gem_docs
 ```
 
 
-<a id="org149f5f0"></a>
+<a id="orgf91c446"></a>
 
 ## Update Your `Rakefile`
 
@@ -84,12 +86,12 @@ GemDocs.install
 ```
 
 
-<a id="orgba004e7"></a>
+<a id="org82f870d"></a>
 
 # Usage
 
 
-<a id="org9fafbb5"></a>
+<a id="org42188e6"></a>
 
 ## Create a skeleton README.org file
 
@@ -100,11 +102,11 @@ rake docs:skeleton
 ```
 
 
-<a id="orgeac62e1"></a>
+<a id="org890242f"></a>
 
 ## Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`
 
-\*\* Getting emacs code blocks to render well in your `README.org` takes proper configuration of the code block headers in Emacs.
+Getting emacs code blocks to render well in your `README.org` takes proper configuration of the code block headers in Emacs.
 
 ```ruby
 rake docs:headers
@@ -133,7 +135,14 @@ Here's what the ruby headers buy you:
 
 The `docs:headers` task also turns off evaluation of shell code blocks since these will often be such things as demonstrating the shell commands to install the gem, etc. Of course, you can override this for particular code blocks.
 
-Those headers are in fact what I am using in this `README`, and here is how they work:
+Those headers are in fact what I am using in this `README`, and here is how they work.
+
+
+<a id="org1377ed6"></a>
+
+### Output Tables
+
+You can build table for `org` to display in the output by returning an array of arrays, which org-mode renders as a table in the output. You can add an hline to the output table by simply adding `nil` to the outer array where you want the hline to occur.
 
 ```ruby
 result = []
@@ -161,12 +170,30 @@ result
 | 3.3333333333333335 |  28.03162489452614 |
 ```
 
-I built the table in the output by returning an array of arrays, which org-mode renders as a table in the output. Notice that I added an hline to the output by simply adding `nil` to the outer array where I wanted the hline to occur.
+
+<a id="org6c552b8"></a>
+
+### Output Values
+
+Sometimes, however, you just want the result of the code block evaluated without building a table. To do so, just set the block header to `:results value raw`.
+
+To compute the value of an $1,000 asset gaining 5% continuously compounding interest over four years, you might do this:
+
+```ruby
+rate = 0.05
+time = 4
+principal = 1000
+principal * Math.exp(rate * time)
+```
+
+```
+1221.40275816017
+```
 
 Apart from all the convenient markup that `org-mode` allows, the ability to easily demonstrate your gem's code in this way is the real killer feature of writing your `README` in `org-mode` then exporting to markdown.
 
 
-<a id="org96ef358"></a>
+<a id="org6dbfe55"></a>
 
 ## Run the Code Blocks in README.org: `rake docs:tangle`
 
@@ -189,8 +216,10 @@ Then, you can evaluate all the code blocks in your `README.org` like this:
 rake docs:tangle
 ```
 
+With the default headers provided by \`rake docs:headers\`, the buffer is evaluated in a session so that code blocks can build on one another. However, \`docs:tangle\` kills any existing session buffer before it runs so that each buffer evaluation is independent of earlier runs.
 
-<a id="org46a5a5d"></a>
+
+<a id="orge79d61d"></a>
 
 ## Ensure that a Badge is Present in `README.md`: `rake docs:badge`
 
@@ -201,7 +230,7 @@ If you want to place the badge somewhere else in you `README.org`, place the spe
 If there is already a badge present, the task will not modify the `README.org` file.
 
 
-<a id="org195fa2c"></a>
+<a id="orgf0bce84"></a>
 
 ## Export `README.org` to `README.md`: `rake docs:export`
 
@@ -218,7 +247,7 @@ rake docs:export
 ```
 
 
-<a id="org89721f1"></a>
+<a id="org82829ee"></a>
 
 ## Generate Yard Documents: `rake docs:yard`
 
@@ -229,7 +258,7 @@ rake docs:yard
 ```
 
 
-<a id="orgf18ec62"></a>
+<a id="org6af456b"></a>
 
 ## Generate an Overview Comment for the Main gem File: `rake docs:overview`
 
@@ -244,9 +273,9 @@ rake docs:overview
 This extracts the "Introduction" section from `README.org` and makes it the overview comment in the gem's main library file. If it already exists, it replaces it with any newer version of the "Introduction" section, otherwise, it does not change the file.
 
 
-<a id="org9ad84cd"></a>
+<a id="org0d04101"></a>
 
-# Confguration
+# Configuration
 
 The tasks defined by `gem_docs` should work out of the box with no configuration. They determine things like the name of the gem, your github user name, etc., by examining files in your repo. If this process gets things wrong, it should be considered a possible bug and reported.
 
@@ -291,7 +320,9 @@ end
 ```
 
 ```
-false
+#+BEGIN_EXPORT markdown
+  [![CI](https://github.com/%u/%n/actions/workflows/%w/badge.svg?branch=%b)](https://github.com/%u/%n/actions/workflows/%w)
+#+END_EXPORT
 ```
 
 The items that are set to `nil` here are populated at runtime by examining files in the gem's directory. In the strings for `headers` and `badge`, several markers are available as standins for these runtime values:
@@ -304,7 +335,7 @@ The items that are set to `nil` here are populated at runtime by examining files
 -   **%w:** the name of the workflow to be used in the badge, for example.
 
 
-<a id="org4961bff"></a>
+<a id="org3a892b5"></a>
 
 # Development
 
@@ -313,14 +344,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`.
 
 
-<a id="org69c53e6"></a>
+<a id="org4bca7b7"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem_docs>.
 
 
-<a id="org13c747d"></a>
+<a id="orgcd7604f"></a>
 
 # License
 

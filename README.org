@@ -137,7 +137,13 @@ these will often be such things as demonstrating the shell commands to install
 the gem, etc.  Of course, you can override this for particular code blocks.
 
 Those headers are in fact what I am using in this ~README~, and here is how
-they work:
+they work.
+
+*** Output Tables
+You can build table for ~org~ to display in the output by returning an array
+of arrays, which org-mode renders as a table in the output.  You can add an
+hline to the output table by simply adding ~nil~ to the outer array where you
+want the hline to occur.
 
 #+begin_src ruby
   result = []
@@ -166,10 +172,25 @@ they work:
 | 3.3333333333333335 |  28.03162489452614 |
 #+end_example
 
-I built the table in the output by returning an array of arrays, which
-org-mode renders as a table in the output.  Notice that I added an hline to
-the output by simply adding ~nil~ to the outer array where I wanted the hline
-to occur.
+*** Output Values
+Sometimes, however, you just want the result of the code block evaluated
+without building a table.  To do so, just set the block header to ~:results
+value raw~.
+
+To compute the value of an $1,000 asset gaining 5% continuously compounding
+interest over four years, you might do this:
+
+#+begin_src ruby :results value raw
+  rate = 0.05
+  time = 4
+  principal = 1000
+  principal * Math.exp(rate * time)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+1221.40275816017
+#+end_example
 
 Apart from all the convenient markup that ~org-mode~ allows, the ability to
 easily demonstrate your gem's code in this way is the real killer feature of
@@ -197,6 +218,11 @@ Then, you can evaluate all the code blocks in your ~README.org~ like this:
 #+begin_src ruby :eval no
  rake docs:tangle
 #+end_src
+
+With the default headers provided by `rake docs:headers`, the buffer is
+evaluated in a session so that code blocks can build on one another.  However,
+`docs:tangle` kills any existing session buffer before it runs so that each
+buffer evaluation is independent of earlier runs.
 
 ** Ensure that a Badge is Present in ~README.md~: ~rake docs:badge~
 It is reassuring to consumers of your gem that your gem passes its workflow
@@ -265,7 +291,7 @@ overview comment in the gem's main library file.  If it already exists, it
 replaces it with any newer version of the "Introduction" section, otherwise,
 it does not change the file.
 
-* Confguration
+* Configuration
 The tasks defined by ~gem_docs~ should work out of the box with no
 configuration.  They determine things like the name of the gem, your github
 user name, etc., by examining files in your repo.  If this process gets things
@@ -315,7 +341,9 @@ The following are the items that can be configured:
 
 #+RESULTS:
 #+begin_example
-false
+,#+BEGIN_EXPORT markdown
+  [![CI](https://github.com/%u/%n/actions/workflows/%w/badge.svg?branch=%b)](https://github.com/%u/%n/actions/workflows/%w)
+,#+END_EXPORT
 #+end_example
 
 The items that are set to ~nil~ here are populated at runtime by examining
