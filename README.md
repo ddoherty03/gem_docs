@@ -1,27 +1,28 @@
-- [Overview](#org0a45629)
-- [Installation](#org4ca2e9f)
-  - [Install the ox-gfm Emacs package](#orge111580)
-  - [Install the gem](#org2064b48)
-  - [Update Your `Rakefile`](#orgf91c446)
-- [Usage](#org82f870d)
-  - [Create a skeleton README.org file](#org42188e6)
-  - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#org890242f)
-    - [Output Tables](#org1377ed6)
-    - [Output Values](#org6c552b8)
-  - [Run the Code Blocks in README.org: `rake docs:tangle`](#org6dbfe55)
-  - [Ensure that a Badge is Present in `README.md`: `rake docs:badge`](#orge79d61d)
-  - [Export `README.org` to `README.md`: `rake docs:export`](#orgf0bce84)
-  - [Generate Yard Documents: `rake docs:yard`](#org82829ee)
-  - [Generate an Overview Comment for the Main gem File: `rake docs:overview`](#org6af456b)
-- [Configuration](#org0d04101)
-- [Development](#org3a892b5)
-- [Contributing](#org4bca7b7)
-- [License](#orgcd7604f)
+- [Overview](#org31d63f1)
+- [Installation](#org4bbdf14)
+  - [Install the ox-gfm Emacs package](#org08e8de7)
+  - [Install the gem](#org9ae67af)
+  - [Update Your `Rakefile`](#org7539365)
+- [Usage](#org140742c)
+  - [Create a skeleton README.org file](#orgbfda4ef)
+  - [Create a skeleton CHANGELOG.org file](#org4f67f9d)
+  - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#org734bd6f)
+    - [Output Tables](#orgcca2f81)
+    - [Output Values](#org5b1c5e6)
+  - [Run the Code Blocks in README.org: `rake docs:tangle`](#org293e265)
+  - [Ensure that a Badge is Present in `README.md`: `rake docs:badge`](#org5d7f9b7)
+  - [Export `README.org` and `CHANGELOG.org` to Markdown: `rake docs:export`](#orgdc96f61)
+  - [Generate Yard Documents: `rake docs:yard`](#orgd53a0e2)
+  - [Generate an Overview Comment for the Main gem File: `rake docs:overview`](#org7bf22a7)
+- [Configuration](#org3f42c83)
+- [Development](#orgeef89a1)
+- [Contributing](#orgf47dea7)
+- [License](#orgb7bb632)
 
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
 
-<a id="org0a45629"></a>
+<a id="org31d63f1"></a>
 
 # Overview
 
@@ -36,17 +37,18 @@ It provides tasks for:
 -   ensuring that proper code block setup is included in `README.org` to facilitate running `ruby` code blocks in a session using the current version of the library,
 -   running the code block examples in a `README.org` by invoking `emacsclient`,
 -   exporting `README.org` to Git-flavored markdown in `README.md`
+-   exporting `CHANGELOG.org` to Git-flavored markdown in `CHANGELOG.md`
 -   ensuring a workflow or ci badge is present in the `README.md`
 -   generating yard documents for your repo, and
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="org4ca2e9f"></a>
+<a id="org4bbdf14"></a>
 
 # Installation
 
 
-<a id="orge111580"></a>
+<a id="org08e8de7"></a>
 
 ## Install the ox-gfm Emacs package
 
@@ -57,7 +59,7 @@ The export of `README.org` to `README.md` requires the `ox-gfm` package to be in
 ```
 
 
-<a id="org2064b48"></a>
+<a id="org9ae67af"></a>
 
 ## Install the gem
 
@@ -74,7 +76,7 @@ gem install gem_docs
 ```
 
 
-<a id="orgf91c446"></a>
+<a id="org7539365"></a>
 
 ## Update Your `Rakefile`
 
@@ -86,23 +88,34 @@ GemDocs.install
 ```
 
 
-<a id="org82f870d"></a>
+<a id="org140742c"></a>
 
 # Usage
 
 
-<a id="org42188e6"></a>
+<a id="orgbfda4ef"></a>
 
 ## Create a skeleton README.org file
 
 This is a simple task that creates a bare-bones `README.org` file to get started with. It does create the file with the name of the gem and other repo detains filled in. If there is already a README.org file, it does nothing.
 
 ```ruby
-rake docs:skeleton
+rake docs:skeleton:readme
 ```
 
 
-<a id="org890242f"></a>
+<a id="org4f67f9d"></a>
+
+## Create a skeleton CHANGELOG.org file
+
+This is a simple task that creates a bare-bones `CHANGELOG.org` file to get started with. It only contains some tips for writing a change log and a sample heading. If there is already a CHANGELOG.org file, it does nothing.
+
+```ruby
+rake docs:skeleton:changelog
+```
+
+
+<a id="org734bd6f"></a>
 
 ## Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`
 
@@ -138,7 +151,7 @@ The `docs:headers` task also turns off evaluation of shell code blocks since the
 Those headers are in fact what I am using in this `README`, and here is how they work.
 
 
-<a id="org1377ed6"></a>
+<a id="orgcca2f81"></a>
 
 ### Output Tables
 
@@ -171,7 +184,7 @@ result
 ```
 
 
-<a id="org6c552b8"></a>
+<a id="org5b1c5e6"></a>
 
 ### Output Values
 
@@ -193,7 +206,7 @@ principal * Math.exp(rate * time)
 Apart from all the convenient markup that `org-mode` allows, the ability to easily demonstrate your gem's code in this way is the real killer feature of writing your `README` in `org-mode` then exporting to markdown.
 
 
-<a id="org6dbfe55"></a>
+<a id="org293e265"></a>
 
 ## Run the Code Blocks in README.org: `rake docs:tangle`
 
@@ -219,7 +232,7 @@ rake docs:tangle
 With the default headers provided by \`rake docs:headers\`, the buffer is evaluated in a session so that code blocks can build on one another. However, \`docs:tangle\` kills any existing session buffer before it runs so that each buffer evaluation is independent of earlier runs.
 
 
-<a id="orge79d61d"></a>
+<a id="org5d7f9b7"></a>
 
 ## Ensure that a Badge is Present in `README.md`: `rake docs:badge`
 
@@ -230,9 +243,9 @@ If you want to place the badge somewhere else in you `README.org`, place the spe
 If there is already a badge present, the task will not modify the `README.org` file.
 
 
-<a id="orgf0bce84"></a>
+<a id="orgdc96f61"></a>
 
-## Export `README.org` to `README.md`: `rake docs:export`
+## Export `README.org` and `CHANGELOG.org` to Markdown: `rake docs:export`
 
 You can write the `README` in Emacs org-mode, using all its features including the execution of code blocks, and then export to git-flavored markdown.
 
@@ -242,12 +255,14 @@ Github renders markdown better than it renders org files, so this helps with the
 
 Also note that when `github` renders your `README.md`, it automatically adds a table of contents, so putting one in the `README.org` file is redundant. If you want to have one for your own purposes, just set the `:noexport` tag on it so it doesn't get put into the `README.md`
 
+Less important, but still handy, you can also write the CHANGELOG in org mode and this task will convert it to markdown for display on github and rubygems.org.
+
 ```ruby
 rake docs:export
 ```
 
 
-<a id="org82829ee"></a>
+<a id="orgd53a0e2"></a>
 
 ## Generate Yard Documents: `rake docs:yard`
 
@@ -258,7 +273,7 @@ rake docs:yard
 ```
 
 
-<a id="org6af456b"></a>
+<a id="org7bf22a7"></a>
 
 ## Generate an Overview Comment for the Main gem File: `rake docs:overview`
 
@@ -273,7 +288,7 @@ rake docs:overview
 This extracts the "Introduction" section from `README.org` and makes it the overview comment in the gem's main library file. If it already exists, it replaces it with any newer version of the "Introduction" section, otherwise, it does not change the file.
 
 
-<a id="org0d04101"></a>
+<a id="org3f42c83"></a>
 
 # Configuration
 
@@ -335,7 +350,7 @@ The items that are set to `nil` here are populated at runtime by examining files
 -   **%w:** the name of the workflow to be used in the badge, for example.
 
 
-<a id="org3a892b5"></a>
+<a id="orgeef89a1"></a>
 
 # Development
 
@@ -344,14 +359,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`.
 
 
-<a id="org4bca7b7"></a>
+<a id="orgf47dea7"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem_docs>.
 
 
-<a id="orgcd7604f"></a>
+<a id="orgb7bb632"></a>
 
 # License
 
