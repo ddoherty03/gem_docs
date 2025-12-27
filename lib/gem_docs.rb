@@ -37,6 +37,7 @@ require "fileutils"
 #   of the library,
 # - running the code block examples in a ~README.org~ by invoking ~emacsclient~,
 # - exporting ~README.org~ to Git-flavored markdown in ~README.md~
+# - exporting ~CHANGELOG.org~ to Git-flavored markdown in ~CHANGELOG.md~
 # - ensuring a workflow or ci badge is present in the ~README.md~
 # - generating yard documents for your repo, and
 # - copying the introductory contents of the README as a leading comment in your
@@ -49,7 +50,16 @@ require "fileutils"
 # detains filled in.  If there is already a README.org file, it does nothing.
 #
 # #+begin_src ruby :eval no
-#  rake docs:skeleton
+#  rake docs:skeleton:readme
+# #+end_src
+#
+# ** Create a skeleton CHANGELOG.org file
+# This is a simple task that creates a bare-bones ~CHANGELOG.org~ file to get
+# started with.  It only contains some tips for writing a change log and a
+# sample heading.  If there is already a CHANGELOG.org file, it does nothing.
+#
+# #+begin_src ruby :eval no
+#  rake docs:skeleton:changelog
 # #+end_src
 #
 # ** Add proper ~#+PROPERTY~ headers in ~README.org~: ~rake docs:headers~
@@ -208,7 +218,7 @@ require "fileutils"
 # If there is already a badge present, the task will not modify the ~README.org~
 # file.
 #
-# ** Export ~README.org~ to ~README.md~: ~rake docs:export~
+# ** Export ~README.org~ and ~CHANGELOG.org~ to Markdown: ~rake docs:export~
 # You can write the ~README~ in Emacs org-mode, using all its features
 # including the execution of code blocks, and then export to git-flavored
 # markdown.
@@ -228,6 +238,10 @@ require "fileutils"
 # table of contents, so putting one in the ~README.org~ file is redundant.  If
 # you want to have one for your own purposes, just set the ~:noexport~ tag on it
 # so it doesn't get put into the ~README.md~
+#
+# Less important, but still handy, you can also write the CHANGELOG in org mode
+# and this task will convert it to markdown for display on github and
+# rubygems.org.
 #
 # #+begin_src ruby :eval no
 #   rake docs:export

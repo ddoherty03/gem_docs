@@ -1,28 +1,28 @@
-- [Overview](#org31d63f1)
-- [Installation](#org4bbdf14)
-  - [Install the ox-gfm Emacs package](#org08e8de7)
-  - [Install the gem](#org9ae67af)
-  - [Update Your `Rakefile`](#org7539365)
-- [Usage](#org140742c)
-  - [Create a skeleton README.org file](#orgbfda4ef)
-  - [Create a skeleton CHANGELOG.org file](#org4f67f9d)
-  - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#org734bd6f)
-    - [Output Tables](#orgcca2f81)
-    - [Output Values](#org5b1c5e6)
-  - [Run the Code Blocks in README.org: `rake docs:tangle`](#org293e265)
-  - [Ensure that a Badge is Present in `README.md`: `rake docs:badge`](#org5d7f9b7)
-  - [Export `README.org` and `CHANGELOG.org` to Markdown: `rake docs:export`](#orgdc96f61)
-  - [Generate Yard Documents: `rake docs:yard`](#orgd53a0e2)
-  - [Generate an Overview Comment for the Main gem File: `rake docs:overview`](#org7bf22a7)
-- [Configuration](#org3f42c83)
-- [Development](#orgeef89a1)
-- [Contributing](#orgf47dea7)
-- [License](#orgb7bb632)
+- [Overview](#orgb77f48d)
+- [Installation](#org0048dfa)
+  - [Install the ox-gfm Emacs package](#org06c182f)
+  - [Install the gem](#org8443226)
+  - [Update Your `Rakefile`](#orge7ef7fb)
+- [Usage](#org6af04e1)
+  - [Create a skeleton README.org file](#org5e00d41)
+  - [Create a skeleton CHANGELOG.org file](#orgf9c4766)
+  - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#org7520f39)
+    - [Output Tables](#orgd7c8a64)
+    - [Output Values](#org99668e8)
+  - [Run the Code Blocks in README.org: `rake docs:tangle`](#org1a7ad1b)
+  - [Ensure that a Badge is Present in `README.md`: `rake docs:badge`](#org560cff5)
+  - [Export `README.org` and `CHANGELOG.org` to Markdown: `rake docs:export`](#org96a5484)
+  - [Generate Yard Documents: `rake docs:yard`](#org1200f6a)
+  - [Generate an Overview Comment for the Main gem File: `rake docs:overview`](#org5c6fa0e)
+- [Configuration](#org15be81b)
+- [Development](#orge446436)
+- [Contributing](#orgb9ef17c)
+- [License](#orgc54c1db)
 
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
 
-<a id="org31d63f1"></a>
+<a id="orgb77f48d"></a>
 
 # Overview
 
@@ -43,12 +43,12 @@ It provides tasks for:
 -   copying the introductory contents of the README as a leading comment in your main gem library file so it gets picked up as an overview for `ri` and `yri`
 
 
-<a id="org4bbdf14"></a>
+<a id="org0048dfa"></a>
 
 # Installation
 
 
-<a id="org08e8de7"></a>
+<a id="org06c182f"></a>
 
 ## Install the ox-gfm Emacs package
 
@@ -59,7 +59,7 @@ The export of `README.org` to `README.md` requires the `ox-gfm` package to be in
 ```
 
 
-<a id="org9ae67af"></a>
+<a id="org8443226"></a>
 
 ## Install the gem
 
@@ -76,7 +76,7 @@ gem install gem_docs
 ```
 
 
-<a id="org7539365"></a>
+<a id="orge7ef7fb"></a>
 
 ## Update Your `Rakefile`
 
@@ -88,12 +88,12 @@ GemDocs.install
 ```
 
 
-<a id="org140742c"></a>
+<a id="org6af04e1"></a>
 
 # Usage
 
 
-<a id="orgbfda4ef"></a>
+<a id="org5e00d41"></a>
 
 ## Create a skeleton README.org file
 
@@ -104,7 +104,7 @@ rake docs:skeleton:readme
 ```
 
 
-<a id="org4f67f9d"></a>
+<a id="orgf9c4766"></a>
 
 ## Create a skeleton CHANGELOG.org file
 
@@ -115,7 +115,7 @@ rake docs:skeleton:changelog
 ```
 
 
-<a id="org734bd6f"></a>
+<a id="org7520f39"></a>
 
 ## Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`
 
@@ -151,7 +151,7 @@ The `docs:headers` task also turns off evaluation of shell code blocks since the
 Those headers are in fact what I am using in this `README`, and here is how they work.
 
 
-<a id="orgcca2f81"></a>
+<a id="orgd7c8a64"></a>
 
 ### Output Tables
 
@@ -184,7 +184,7 @@ result
 ```
 
 
-<a id="org5b1c5e6"></a>
+<a id="org99668e8"></a>
 
 ### Output Values
 
@@ -206,7 +206,7 @@ principal * Math.exp(rate * time)
 Apart from all the convenient markup that `org-mode` allows, the ability to easily demonstrate your gem's code in this way is the real killer feature of writing your `README` in `org-mode` then exporting to markdown.
 
 
-<a id="org293e265"></a>
+<a id="org1a7ad1b"></a>
 
 ## Run the Code Blocks in README.org: `rake docs:tangle`
 
@@ -232,7 +232,7 @@ rake docs:tangle
 With the default headers provided by \`rake docs:headers\`, the buffer is evaluated in a session so that code blocks can build on one another. However, \`docs:tangle\` kills any existing session buffer before it runs so that each buffer evaluation is independent of earlier runs.
 
 
-<a id="org5d7f9b7"></a>
+<a id="org560cff5"></a>
 
 ## Ensure that a Badge is Present in `README.md`: `rake docs:badge`
 
@@ -243,7 +243,7 @@ If you want to place the badge somewhere else in you `README.org`, place the spe
 If there is already a badge present, the task will not modify the `README.org` file.
 
 
-<a id="orgdc96f61"></a>
+<a id="org96a5484"></a>
 
 ## Export `README.org` and `CHANGELOG.org` to Markdown: `rake docs:export`
 
@@ -262,7 +262,7 @@ rake docs:export
 ```
 
 
-<a id="orgd53a0e2"></a>
+<a id="org1200f6a"></a>
 
 ## Generate Yard Documents: `rake docs:yard`
 
@@ -273,7 +273,7 @@ rake docs:yard
 ```
 
 
-<a id="org7bf22a7"></a>
+<a id="org5c6fa0e"></a>
 
 ## Generate an Overview Comment for the Main gem File: `rake docs:overview`
 
@@ -288,7 +288,7 @@ rake docs:overview
 This extracts the "Introduction" section from `README.org` and makes it the overview comment in the gem's main library file. If it already exists, it replaces it with any newer version of the "Introduction" section, otherwise, it does not change the file.
 
 
-<a id="org3f42c83"></a>
+<a id="org15be81b"></a>
 
 # Configuration
 
@@ -350,7 +350,7 @@ The items that are set to `nil` here are populated at runtime by examining files
 -   **%w:** the name of the workflow to be used in the badge, for example.
 
 
-<a id="orgeef89a1"></a>
+<a id="orge446436"></a>
 
 # Development
 
@@ -359,14 +359,14 @@ After checking out the repo, run \`bin/setup\` to install dependencies. Then, ru
 To install this gem onto your local machine, run \`bundle exec rake install\`.
 
 
-<a id="orgf47dea7"></a>
+<a id="orgb9ef17c"></a>
 
 # Contributing
 
 Bug reports and pull requests are welcome on GitHub at <https://github.com/ddoherty03/gem_docs>.
 
 
-<a id="orgb7bb632"></a>
+<a id="orgc54c1db"></a>
 
 # License
 
