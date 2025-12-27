@@ -16,7 +16,7 @@ module GemDocs
 
     namespace :docs do
       desc "Evaluate code blocks in README.org"
-      task :tangle => ["skeleton:readme"] do
+      task :tangle => ["docs:skeleton:readme"] do
         print "Executing code blocks in #{README_ORG} ... "
         GemDocs::Emacs.tangle
       end
@@ -25,7 +25,7 @@ module GemDocs
       task :export => [:badge, README_MD, CHANGELOG_MD]
 
       desc "Extract overview from README.org and embed in lib/<gem>.rb for ri/yard"
-      task :overview => [":skeleton:readme", README_ORG] do
+      task :overview => ["docs:skeleton:readme", README_ORG] do
         print "Embedding overview extracted from #{GemDocs::README_ORG} into main gem file ... "
         if GemDocs::Overview.write_overview?
           puts "added"
@@ -55,7 +55,7 @@ module GemDocs
       end
 
       desc "Insert #+PROPERTY headers at top of README.org for code blocks"
-      task :header => "skeleton:readme" do
+      task :header => "docs:skeleton:readme" do
         print "Inserting headers ... "
         if GemDocs::Header.write_header?
           puts "added"
@@ -71,7 +71,7 @@ module GemDocs
       end
 
       desc "Ensure GitHub Actions badge exists in README.org"
-      task :badge => "skeleton:readme" do
+      task :badge => "docs:skeleton:readme" do
         print "Ensuring badges are in README.org ... "
         if GemDocs::Badge.ensure!
           puts "added"
@@ -81,7 +81,7 @@ module GemDocs
       end
 
       desc "Run all documentation tasks (examples, readme, overview, yard, ri)"
-      task :all => ["skeleton:readme", "skeleton:changelog", :header, :tangle, :export, :overview, :yard]
+      task :all => ["docs:skeleton:readme", "docs:skeleton:changelog", :header, :tangle, :export, :overview, :yard]
     end
   end
 end
