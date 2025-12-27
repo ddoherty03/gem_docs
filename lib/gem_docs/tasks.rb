@@ -25,7 +25,7 @@ module GemDocs
       task :export => [:badge, README_MD, CHANGELOG_MD]
 
       desc "Extract overview from README.org and embed in lib/<gem>.rb for ri/yard"
-      task :overview => [:skeleton, README_ORG] do
+      task :overview => [":skeleton:readme", README_ORG] do
         print "Embedding overview extracted from #{GemDocs::README_ORG} into main gem file ... "
         if GemDocs::Overview.write_overview?
           puts "added"
