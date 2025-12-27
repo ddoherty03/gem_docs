@@ -46,9 +46,9 @@ module GemDocs
     describe ".write_overview?" do
       context "when there is no README.org yet" do
         it "adds README.org the repo" do
-          expect(Skeleton).not_to be_present
+          expect(Skeleton).not_to be_readme_present
           expect(Skeleton.make_readme?).to be true
-          expect(Skeleton).to be_present
+          expect(Skeleton).to be_readme_present
         end
       end
 
@@ -56,9 +56,9 @@ module GemDocs
         let(:add_readme) { true }
 
         it "does not add an additional overview" do
-          expect(Skeleton).to be_present
+          expect(Skeleton).to be_readme_present
           expect(Skeleton.make_readme?).to be false
-          expect(Skeleton).to be_present
+          expect(Skeleton).to be_readme_present
         end
       end
     end
