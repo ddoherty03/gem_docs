@@ -55,11 +55,7 @@ module GemDocs
 
     let(:readme) do
       <<~ORG
-        #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
-        #+PROPERTY: header-args:ruby :wrap example :session fake_gem_session
-        #+PROPERTY: header-args:ruby+ :prologue "require_relative 'lib/fake_gem'" :eval yes
-        #+PROPERTY: header-args:sh :exports code :eval no
-        #+PROPERTY: header-args:bash :exports code :eval no
+        #{GemDocs::Header.org_headers}
         #+TITLE: FakeGem
 
         * Introduction
@@ -152,11 +148,21 @@ module GemDocs
 
     let(:results) { results_square }
 
+    let(:gemfile) do
+      <<~GEM
+        source "https://rubygems.org"
+
+        gemspec
+        gem "irb"
+        GEM
+    end
+
     around do |example|
       Dir.mktmpdir do |dir|
         root = dir
         Dir.chdir(root) do
           File.write(File.join(root, "fake_gem.gemspec"), fake_spec)
+          File.write(File.join(root, "Gemfile"), gemfile)
           File.write(File.join(root, "README.org"), readme)
           File.write(File.join(root, "CHANGELOG.org"), changelog)
           lib_dir = File.join(root, "lib/")
@@ -247,6 +253,7 @@ module GemDocs
         end
       end
 
+      # rubocop:disable RSpec/MultipleMemoizedHelpers
       context 'when the org file is not saved' do
         let(:new_block) do
           <<~BLK
@@ -278,6 +285,7 @@ module GemDocs
           expect(result_lines.size).to eq(2)
         end
       end
+      # rubocop:enable RSpec/MultipleMemoizedHelpers
     end
   end
 end

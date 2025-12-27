@@ -18,6 +18,17 @@ module GemDocs
       prelim.any? { |h| h.match?(PROPERTY_RE) }
     end
 
+    def self.org_headers
+      repo = Repo.from_gemspec
+      GemDocs.config.headers
+        .gsub('%n', repo.name)
+        .gsub('%h', repo.host)
+        .gsub('%u', repo.user)
+        .gsub('%r', repo.root)
+        .gsub('%b', repo.branch)
+        .gsub('%w', repo.workflow)
+    end
+
     class << self
       private
 
@@ -37,17 +48,6 @@ module GemDocs
           end
         end
         [prelim, body]
-      end
-
-      def org_headers
-        repo = Repo.from_gemspec
-        GemDocs.config.headers
-          .gsub('%n', repo.name)
-          .gsub('%h', repo.host)
-          .gsub('%u', repo.user)
-          .gsub('%r', repo.root)
-          .gsub('%b', repo.branch)
-          .gsub('%w', repo.workflow)
       end
     end
   end
