@@ -1,11 +1,11 @@
-- [Version 0.3.0 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-27 Sat]</span></span>](#org033017e)
-- [Version 0.2.0 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-23 Tue]</span></span>](#org9f8d00f)
-- [Version 0.1.2 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-23 Tue]</span></span>](#org562ed0c)
+- [Version 0.3.1 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-27 Sat]</span></span>](#orgc7d4406)
+- [Version 0.2.0 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-23 Tue]</span></span>](#org89feb34)
+- [Version 0.1.2 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-23 Tue]</span></span>](#orge42f700)
 
 
-<a id="org033017e"></a>
+<a id="orgc7d4406"></a>
 
-# Version 0.3.0 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-27 Sat]</span></span>
+# Version 0.3.1 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-27 Sat]</span></span>
 
 -   Added ruby header to run \`bundle exec irb\` as the code block process. This should eliminate library mis-matches in running blocks.
 -   Added export of CHANGELOG.org to CHANGELOG.md;
@@ -13,7 +13,7 @@
 -   Added this CHANGELOG so I have an example to use in my specs. Oh, and for users also.
 
 
-<a id="org9f8d00f"></a>
+<a id="org89feb34"></a>
 
 # Version 0.2.0 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-23 Tue]</span></span>
 
@@ -21,7 +21,7 @@
 -   Before docs:tangle, kill the session buffer for ruby code blocks so each run is independent of prior runs and the current version of the gem lib gets loaded.
 
 
-<a id="org562ed0c"></a>
+<a id="orge42f700"></a>
 
 # Version 0.1.2 <span class="timestamp-wrapper"><span class="timestamp">[2025-12-23 Tue]</span></span>
 

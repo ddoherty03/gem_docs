@@ -7,7 +7,7 @@
 5. Give each heading an inactove date (C-c ! is useful here) and a version
    number.
 
-* Version 0.3.0 [2025-12-27 Sat]
+* Version 0.3.1 [2025-12-27 Sat]
 - Added ruby header to run `bundle exec irb` as the code block process.  This
   should eliminate library mis-matches in running blocks.
 - Added export of CHANGELOG.org to CHANGELOG.md;
