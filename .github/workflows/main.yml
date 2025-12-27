@@ -29,8 +29,8 @@ jobs:
           bundler-cache: true
       - name: Disable Bundler frozen setting
         run: |
-          - bundle config set frozen false
-          - bundle install
+          bundle config set frozen false
+          bundle install
       - name: Run rake tasks that don't need emacs
         run: |
           bundle exec rspec --exclude_pattern spec/gem_docs/emacs_spec.rb
