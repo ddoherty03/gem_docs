@@ -50,6 +50,8 @@ module GemDocs
           expect(Skeleton.make_readme?).to be true
           expect(Skeleton).to be_readme_present
           expect(File.read("README.org")).to include("Version: 0.9.10")
+          expect(File.read("README.org")).to include(":session fake_gem_session :eval never-export")
+          expect(Header.write_header?).to be false
           expect(Skeleton.make_readme?).to be false
         end
       end

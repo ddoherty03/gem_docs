@@ -20,7 +20,7 @@ module GemDocs
       @headers =
         <<~HEADER
           #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
-          #+PROPERTY: header-args:ruby+ :wrap example :session %n_session :eval yes
+          #+PROPERTY: header-args:ruby+ :wrap example :session %n_session :eval never-export
           #+PROPERTY: header-args:ruby+ :prologue "$:.unshift('./lib') unless $:.first == './lib'; require '%n'; nil"
           #+PROPERTY: header-args:ruby+ :ruby "bundle exec irb"
           #+PROPERTY: header-args:sh :exports code :eval no

@@ -61,7 +61,7 @@ module GemDocs
 
     let(:readme_w_ruby_head) do
       <<~ORG
-        #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
+        #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./" :eval yes
         #+PROPERTY: header-args:sh :exports code :eval no
         #+PROPERTY: header-args:bash :exports code :eval no
         #+TITLE: FakeGem
@@ -100,6 +100,7 @@ module GemDocs
         it "adds the ruby headers at the top of the file" do
           expect(Header).not_to be_present
           expect(Header.write_header?).to be true
+          expect(File.read(README_ORG)).to include(":session fake_gem_session :eval never-export")
           expect(Header).to be_present
         end
       end

@@ -12,6 +12,7 @@ module GemDocs
 
       content = <<~SKEL
         #+TITLE: #{repo.module_name} Guide
+        #{Header.org_headers.strip}
 
         * Introduction
 

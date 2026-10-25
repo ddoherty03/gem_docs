@@ -99,7 +99,7 @@ GemDocs.install
 
 ## Create a skeleton README.org file
 
-This is a simple task that creates a bare-bones `README.org` file to get started with. It does create the file with the name of the gem and other repo details filled in. The task also inserts or refreshes a version block near the top using the consuming gem's gemspec version, preserving existing content. This version is refreshed by `docs:export` and `docs:all` as well.
+This is a simple task that creates a bare-bones `README.org` file to get started with. It does create the file with the name of the gem and other repo details filled in. The task also inserts or refreshes a version block near the top using the consuming gem's gemspec version, preserving existing content. This version is refreshed by `docs:export` and `docs:all` as well. New skeletons include the configured code-block headers, defaulting to `:eval never-export`. Existing README headers are preserved.
 
 ```ruby
 rake docs:skeleton:readme
@@ -131,7 +131,7 @@ By default, the `gem_docs` `rake docs:headers` task will add the following heade
 
 ```
 #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
-#+PROPERTY: header-args:ruby+ :wrap example :session gem_docs_session
+#+PROPERTY: header-args:ruby+ :wrap example :session gem_docs_session :eval never-export
 #+PROPERTY: header-args:ruby+ :prologue "$:.unshift('./lib') unless $:.first == './lib'; require '%n'"
 #+PROPERTY: header-args:sh :exports code :eval no
 #+PROPERTY: header-args:bash :exports code :eval no
@@ -235,7 +235,7 @@ With the default headers provided by \`rake docs:headers\`, the buffer is evalua
 
 If there are no executable blocks, `docs:tangle` skips execution. If blocks are present, Org resolves inherited and per-block headers; when all blocks disable evaluation with `:eval no` or `:eval never`, the existing session is left alone. Blocks that override those headers are still evaluated.
 
-To execute examples with `docs:tangle` but reuse their saved results during `docs:export`, use `:eval never-export` instead of `:eval yes`. This avoids executing examples twice when running `docs:all`.
+The default `:eval never-export` executes examples with `docs:tangle` and reuses saved results during `docs:export`, avoiding double execution in `docs:all`. After editing examples, run `docs:tangle` before exporting, or run `docs:all`, to refresh their results. Existing READMEs retain their headers; change `:eval yes` to `:eval never-export` to adopt this behavior.
 
 Execution and export fail on Emacs errors or interactive confirmation prompts instead of silently succeeding or waiting for a hidden prompt. Resolve confirmation requests in Emacs before retrying; `:eval query` blocks must be run interactively or have their evaluation policy changed explicitly.
 
@@ -333,7 +333,7 @@ GemDocs.configure do |c|
   c.headers =
     <<~HEADER
       #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
-      #+PROPERTY: header-args:ruby+ :wrap example :session %n_session :eval yes
+      #+PROPERTY: header-args:ruby+ :wrap example :session %n_session :eval never-export
       #+PROPERTY: header-args:ruby+ :prologue "$:.unshift('./lib') unless $:.first == './lib'; require '%n'"
       #+PROPERTY: header-args:sh :exports code :eval no
       #+PROPERTY: header-args:bash :exports code :eval no
