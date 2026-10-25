@@ -11,15 +11,17 @@ module GemDocs
     attr_accessor :repo_workflow_dir
     attr_accessor :repo_workflow_name
     attr_accessor :badge
+    attr_accessor :emacs_timeout
 
     def initialize
+      @emacs_timeout = 120
       # Default: support org comment markers
       @overview_headings = ["Introduction"]
       @headers =
         <<~HEADER
           #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
           #+PROPERTY: header-args:ruby+ :wrap example :session %n_session :eval yes
-          #+PROPERTY: header-args:ruby+ :prologue "$:.unshift('./lib') unless $:.first == './lib'; require '%n'"
+          #+PROPERTY: header-args:ruby+ :prologue "$:.unshift('./lib') unless $:.first == './lib'; require '%n'; nil"
           #+PROPERTY: header-args:ruby+ :ruby "bundle exec irb"
           #+PROPERTY: header-args:sh :exports code :eval no
           #+PROPERTY: header-args:bash :exports code :eval no

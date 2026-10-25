@@ -231,6 +231,22 @@ rake docs:tangle
 
 With the default headers provided by \`rake docs:headers\`, the buffer is evaluated in a session so that code blocks can build on one another. However, \`docs:tangle\` kills any existing session buffer before it runs so that each buffer evaluation is independent of earlier runs.
 
+If there are no executable blocks, `docs:tangle` skips execution. If blocks are present, Org resolves inherited and per-block headers; when all blocks disable evaluation with `:eval no` or `:eval never`, the existing session is left alone. Blocks that override those headers are still evaluated.
+
+To execute examples with `docs:tangle` but reuse their saved results during `docs:export`, use `:eval never-export` instead of `:eval yes`. This avoids executing examples twice when running `docs:all`.
+
+Execution and export fail on Emacs errors or interactive confirmation prompts instead of silently succeeding or waiting for a hidden prompt. Resolve confirmation requests in Emacs before retrying; `:eval query` blocks must be run interactively or have their evaluation policy changed explicitly.
+
+Each Emacs call has a 120-second timeout. For longer examples, configure:
+
+```ruby
+GemDocs.configure do |c|
+  c.emacs_timeout = 300
+end
+```
+
+The timeout stops Rake from waiting and attempts to interrupt the operation in Emacs. It cannot guarantee that code running in the shared Emacs server has stopped. Inspect Emacs and any running session before retrying a timed-out task.
+
 
 <a id="org533f8cb"></a>
 
@@ -311,6 +327,7 @@ The following are the items that can be configured:
 ```ruby
 GemDocs.configure do |c|
   c.overview_headings = ["Introduction"]
+  c.emacs_timeout = 120
   c.headers =
     <<~HEADER
       #+PROPERTY: header-args:ruby :results value :colnames no :hlines yes :exports both :dir "./"
