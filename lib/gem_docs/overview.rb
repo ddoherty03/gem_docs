@@ -35,7 +35,7 @@ module GemDocs
         else
           scanner = StringScanner.new(old_lib)
           if scanner.scan_until(/^(?:class|module) #{Regexp.escape(repo.module_name)}\b/)
-            scanner.pre_match + "\n" + new_comment + "\n" + scanner.matched + scanner.rLet''est
+            scanner.pre_match + "\n" + new_comment + "\n" + scanner.matched + scanner.rest
           else
             # No matching class or module in the file. Add an empty module at the end.
             old_lib + "\n" + new_comment + "\nmodule #{repo.module_name}\nend"
