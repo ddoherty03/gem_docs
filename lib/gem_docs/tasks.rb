@@ -55,7 +55,7 @@ module GemDocs
       end
 
       desc "Insert #+PROPERTY headers at top of README.org for code blocks"
-      task :header => "docs:skeleton:readme" do
+      task :headers => "docs:skeleton:readme" do
         print "Inserting headers ... "
         if GemDocs::Header.write_header?
           puts "added"
@@ -63,6 +63,8 @@ module GemDocs
           puts "already present"
         end
       end
+
+      task :header => :headers
 
       desc "Generate YARD HTML documentation"
       task :yard => [:overview] do
@@ -81,7 +83,7 @@ module GemDocs
       end
 
       desc "Run all documentation tasks (examples, readme, overview, yard, ri)"
-      task :all => ["docs:skeleton:readme", "docs:skeleton:changelog", :header, :tangle, :export, :overview, :yard]
+      task :all => ["docs:skeleton:readme", "docs:skeleton:changelog", :headers, :tangle, :export, :overview, :yard]
     end
   end
 end
