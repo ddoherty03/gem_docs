@@ -295,7 +295,13 @@ module GemDocs
   # Auto-detect project root (handles being run from subdirs)
   def self.project_root
     here = Dir.pwd
-    here = File.dirname(here) until !Dir['*.gemspec', 'Gemfile'].empty? || here == "/"
-    here
+    loop do
+      return here unless Dir.glob(['*.gemspec', 'Gemfile'], base: here).empty?
+
+      parent = File.dirname(here)
+      return here if parent == here
+
+      here = parent
+    end
   end
 end

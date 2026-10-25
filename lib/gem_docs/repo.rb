@@ -149,7 +149,7 @@ module GemDocs
           abort "No gemspec found" if candidates.empty?
           abort "Multiple gemspecs found: #{candidates.join(', ')}" if candidates.size > 1
         end
-        candidates.first
+        File.join(GemDocs.project_root, candidates.first)
       end
 
       def load_gemspec(path)
