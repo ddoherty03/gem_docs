@@ -127,6 +127,17 @@ module GemDocs
         expect(File).to exist(".yardopts")
         expect(File).to exist(File.join(doc_dir, 'index.html'))
       end
+
+      it "preserves and uses existing custom YARD options" do
+        custom_options = "--output-dir custom-doc\n--exclude lib/private.rb\nlib/**/*.rb\n"
+        File.write(".yardopts", custom_options)
+
+        Yard.generate(supress_out: true)
+
+        expect(File.read(".yardopts")).to eq(custom_options)
+        expect(File).to exist("custom-doc/index.html")
+        expect(File).not_to exist("doc")
+      end
     end
   end
 end

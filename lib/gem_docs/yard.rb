@@ -31,11 +31,11 @@ module GemDocs
         YOPTS
       end
 
-      # Write .yardopts only if needed
+      # Create defaults only when the project has no .yardopts file.
       def write_yardopts
-        if !File.exist?(yardopts_path) || File.read(yardopts_path) != yardopts_contents
-          File.write(yardopts_path, yardopts_contents)
-        end
+        return if File.exist?(yardopts_path)
+
+        File.write(yardopts_path, yardopts_contents)
       end
     end
   end
