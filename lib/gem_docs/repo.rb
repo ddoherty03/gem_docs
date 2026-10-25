@@ -2,13 +2,14 @@
 
 module GemDocs
   class Repo
-    attr_accessor :root, :host, :user, :name, :module_name
+    attr_accessor :root, :host, :user, :name, :module_name, :version
     attr_accessor :branch, :workflow_dir, :workflow_name
 
     def initialize(root: nil, host: nil,
       user: nil,
       name: nil,
       module_name: nil,
+      version: nil,
       branch: 'master',
       workflow_dir: nil,
       workflow_name: nil)
@@ -16,6 +17,7 @@ module GemDocs
       @host = host
       @user = user
       @module_name = module_name
+      @version = version
       @name = name
       @branch = branch
       @workflow_dir = workflow_dir
@@ -59,6 +61,7 @@ module GemDocs
           user: user,
           name: name,
           module_name: mname,
+          version: spec.version.to_s,
           branch: branch,
           workflow_dir: wdir,
           workflow_name: wname,

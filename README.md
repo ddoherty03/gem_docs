@@ -19,6 +19,8 @@
 - [Contributing](#org063f258)
 - [License](#org1481ea7)
 
+Version: 0.3.1
+
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 
 
@@ -97,7 +99,7 @@ GemDocs.install
 
 ## Create a skeleton README.org file
 
-This is a simple task that creates a bare-bones `README.org` file to get started with. It does create the file with the name of the gem and other repo detains filled in. If there is already a README.org file, it does nothing.
+This is a simple task that creates a bare-bones `README.org` file to get started with. It does create the file with the name of the gem and other repo details filled in. The task also inserts or refreshes a version block near the top using the consuming gem's gemspec version, preserving existing content. This version is refreshed by `docs:export` and `docs:all` as well.
 
 ```ruby
 rake docs:skeleton:readme

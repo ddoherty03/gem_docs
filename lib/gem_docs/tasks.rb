@@ -35,12 +35,12 @@ module GemDocs
       end
 
       namespace :skeleton do
-        desc "Create skeleton README.org if one does not exist"
+        desc "Create README.org if missing and refresh its gem version"
         task :readme do
           if GemDocs::Skeleton.make_readme?
-            puts "README.org added"
+            puts "README.org created or version updated"
           else
-            puts "README.org already present"
+            puts "README.org already up to date"
           end
         end
 

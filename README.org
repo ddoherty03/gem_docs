@@ -6,6 +6,11 @@
 #+PROPERTY: header-args:sh :exports code :eval no
 #+PROPERTY: header-args:bash :exports code :eval no
 
+# gem_docs:version begin
+Version: 0.3.1
+# gem_docs:version end
+
+
 #+BEGIN_EXPORT markdown
 [![CI](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ddoherty03/gem_docs/actions/workflows/main.yml)
 #+END_EXPORT
@@ -76,7 +81,9 @@ To use this gem place the following lines in your gem's ~Rakefile~:
 ** Create a skeleton README.org file
 This is a simple task that creates a bare-bones ~README.org~ file to get
 started with.  It does create the file with the name of the gem and other repo
-detains filled in.  If there is already a README.org file, it does nothing.
+details filled in.  The task also inserts or refreshes a version block near
+the top using the consuming gem's gemspec version, preserving existing content.
+This version is refreshed by ~docs:export~ and ~docs:all~ as well.
 
 #+begin_src ruby :eval no
  rake docs:skeleton:readme

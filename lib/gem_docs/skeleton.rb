@@ -2,11 +2,14 @@
 
 module GemDocs
   module Skeleton
-    # @return String The overview from README per config
-    def self.make_readme?
-      return false if readme_present?
+    VERSION_BLOCK_RE = /^# gem_docs:version begin\n.*?^# gem_docs:version end\n?/m
 
+    # Create the README or refresh its managed gemspec version block.
+    # @return [Boolean] whether the README changed
+    def self.make_readme?
       repo = Repo.from_gemspec
+      return write_version?(File.read(README_ORG), repo.version) if readme_present?
+
       content = <<~SKEL
         #+TITLE: #{repo.module_name} Guide
 
@@ -42,8 +45,28 @@ module GemDocs
         The gem is available as open source under the terms of the [MIT
         License](https://opensource.org/licenses/MIT).
       SKEL
-      File.write(README_ORG, content) > 0
+      write_version?(content, repo.version)
     end
+
+    def self.write_version?(content, version)
+      block = <<~ORG
+        # gem_docs:version begin
+        Version: #{version}
+        # gem_docs:version end
+      ORG
+      updated = if content.match?(VERSION_BLOCK_RE)
+        content.sub(VERSION_BLOCK_RE, block)
+      else
+        # Keep the version below the initial Org metadata and near the CI badge.
+        header = content[/\A(?:#\+[^\n]*\n)*/]
+        header + "\n" + block + "\n" + content.delete_prefix(header)
+      end
+      return false if File.exist?(README_ORG) && updated == content
+
+      File.write(README_ORG, updated)
+      true
+    end
+    private_class_method :write_version?
 
     def self.readme_present?
       File.exist?(README_ORG)

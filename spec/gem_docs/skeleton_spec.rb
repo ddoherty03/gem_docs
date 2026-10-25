@@ -43,22 +43,53 @@ module GemDocs
       end
     end
 
-    describe ".write_overview?" do
+    describe ".make_readme?" do
       context "when there is no README.org yet" do
         it "adds README.org the repo" do
           expect(Skeleton).not_to be_readme_present
           expect(Skeleton.make_readme?).to be true
           expect(Skeleton).to be_readme_present
+          expect(File.read("README.org")).to include("Version: 0.9.10")
+          expect(Skeleton.make_readme?).to be false
         end
       end
 
       context "when the overview is already present" do
         let(:add_readme) { true }
 
-        it "does not add an additional overview" do
+        it "adds the version without replacing existing content and is idempotent" do
           expect(Skeleton).to be_readme_present
+          expect(Skeleton.make_readme?).to be true
+          written = File.read("README.org")
+          expect(written).to include("Version: 0.9.10", "You're gonna love it!")
           expect(Skeleton.make_readme?).to be false
-          expect(Skeleton).to be_readme_present
+          expect(File.read("README.org")).to eq(written)
+        end
+
+        it "refreshes the version after the consuming gemspec changes" do
+          Skeleton.make_readme?
+          File.write("fake_gem.gemspec", fake_spec.sub('0.9.10', '0.10.0.pre.1'))
+          # A new rake invocation starts without RubyGems' loaded gemspec cache.
+          Gem::Specification.reset
+
+          expect(Skeleton.make_readme?).to be true
+          written = File.read("README.org")
+          expect(written).to include("Version: 0.10.0.pre.1", "You're gonna love it!")
+          expect(written).not_to include("Version: 0.9.10")
+          expect(written.scan("# gem_docs:version begin").size).to eq(1)
+        end
+
+        it "refreshes the version through the rake skeleton task" do
+          require "rake"
+          original_application = Rake.application
+          begin
+            Rake.application = Rake::Application.new
+            GemDocs.install
+            expect { Rake::Task["docs:skeleton:readme"].invoke }.to output(/version updated/).to_stdout
+            expect(File.read("README.org")).to include("Version: 0.9.10")
+          ensure
+            Rake.application = original_application
+          end
         end
       end
     end
