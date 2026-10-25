@@ -72,7 +72,7 @@ module GemDocs
             GemDocs.config.repo_workflow_dir,
             GemDocs.config.repo_workflow_name,
           )
-          return [File.dirname(workflow_file), File.dirname(workflow_file)] if File.readable?(workflow_file)
+          return [File.dirname(workflow_file), File.basename(workflow_file)] if File.readable?(workflow_file)
         end
 
         dir = File.join(GemDocs.project_root, ".github/workflows")

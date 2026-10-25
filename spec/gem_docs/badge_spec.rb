@@ -114,6 +114,24 @@ module GemDocs
         end
       end
 
+      context "when a workflow is explicitly configured" do
+        before do
+          config = GemDocs::Config.new
+          config.repo_workflow_name = "ci.yml"
+          allow(GemDocs).to receive(:config).and_return(config)
+          File.write(".github/workflows/ci.yml", "name: CI")
+        end
+
+        it "uses the workflow filename in both badge URLs" do
+          Badge.ensure!
+
+          written = File.read("README.org")
+          workflow_url = "https://github.com/ded/fake_gem/actions/workflows/ci.yml"
+          expect(written).to include("[![CI](#{workflow_url}/badge.svg?branch=master)](#{workflow_url})")
+          expect(written).not_to include(Dir.pwd)
+        end
+      end
+
       context "when the badge is already present" do
         let(:readme) { readme_w_badge }
 
