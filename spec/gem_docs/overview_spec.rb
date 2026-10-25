@@ -155,6 +155,34 @@ module GemDocs
         end
       end
 
+      context "when the top-level constant is a class" do
+        let(:main_lib) { "class FakeGem < Object\nend\n" }
+
+        it "adds the overview without changing the class declaration" do
+          expect(Overview.write_overview?).to be true
+          expect(Overview).to be_present
+
+          contents = File.read("lib/fake_gem.rb")
+          expect(contents).to end_with(main_lib)
+          expect { Module.new.module_eval(contents) }.not_to raise_error
+        end
+
+        it "does not duplicate an existing overview" do
+          Overview.write_overview?
+          expect(Overview.write_overview?).to be false
+        end
+
+        it "replaces the overview when the README changes" do
+          Overview.write_overview?
+          File.write("README.org", readme.sub("This gem contains", "This library contains"))
+
+          expect(Overview.write_overview?).to be true
+          contents = File.read("lib/fake_gem.rb")
+          expect(contents).to include("# This library contains")
+          expect(contents.scan(Overview::BANNER).size).to eq(1)
+        end
+      end
+
       context "when there is no overview or module in lib yet" do
         let(:main_lib) { main_lib_wo_module }
 

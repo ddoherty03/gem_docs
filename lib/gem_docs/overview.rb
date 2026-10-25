@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'strscan'
-require 'debug'
 
 module GemDocs
   module Overview
@@ -35,10 +34,10 @@ module GemDocs
           old_lib.sub(old_comment, new_comment)
         else
           scanner = StringScanner.new(old_lib)
-          if scanner.scan_until(/^module #{repo.module_name}/)
-            scanner.pre_match + "\n" + new_comment + "\n" + scanner.matched + scanner.rest
+          if scanner.scan_until(/^(?:class|module) #{Regexp.escape(repo.module_name)}\b/)
+            scanner.pre_match + "\n" + new_comment + "\n" + scanner.matched + scanner.rLet''est
           else
-            # No `module GemName` in the file.  Add empty one at the end
+            # No matching class or module in the file. Add an empty module at the end.
             old_lib + "\n" + new_comment + "\nmodule #{repo.module_name}\nend"
           end
         end
@@ -46,9 +45,8 @@ module GemDocs
     end
 
     # Return a Regexp that capture any GemDocs-generated overview comment in
-    # the main module library file.  The Regex requires the comment to come
-    # immediately before the `module <GemName>` line of the libary file, or it
-    # will not match.
+    # the main library file. The Regex requires the comment to come immediately
+    # before the `class <GemName>` or `module <GemName>` line, or it will not match.
     def self.overview_re
       heads = GemDocs.config.overview_headings
       re_str = "#\\s*" + Regexp.quote(BANNER) + ".*"
@@ -56,7 +54,7 @@ module GemDocs
         re_str << "\\*\\s+#{Regexp.escape(h)}.*"
       end
       repo = Repo.from_gemspec
-      re_str += "(?=\\n\\s*module\\s+#{repo.module_name})"
+      re_str += "(?=\\n\\s*(?:class|module)\\s+#{Regexp.escape(repo.module_name)}\\b)"
       Regexp.new(re_str, Regexp::MULTILINE | Regexp::IGNORECASE)
     end
 
