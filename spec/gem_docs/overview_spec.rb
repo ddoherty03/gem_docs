@@ -145,6 +145,48 @@ module GemDocs
     end
 
     describe ".write_overview" do
+      context "when the configured section is absent" do
+        let(:main_lib) { main_lib_wo_overview }
+        let(:readme) { "* ErbTeX\n** Description\nSome documentation.\n" }
+
+        it "leaves the library unchanged across repeated runs" do
+          2.times { expect(Overview.write_overview?).to be false }
+          expect(File.read("lib/fake_gem.rb")).to eq(main_lib)
+        end
+      end
+
+      context "when the section starts on the first line" do
+        let(:main_lib) { main_lib_wo_overview }
+        let(:readme) { "* Introduction\nFirst-line overview.\n" }
+
+        it "extracts the section and remains idempotent" do
+          expect(Overview.write_overview?).to be true
+          expect(File.read("lib/fake_gem.rb")).to include("# First-line overview.")
+          expect(Overview.write_overview?).to be false
+        end
+      end
+
+      context "when legacy empty banners are duplicated" do
+        let(:main_lib) { ("# #{Overview::BANNER}\n#\n\n\n" * 3) + "module FakeGem\nend\n" }
+
+        it "replaces them with one populated overview" do
+          expect(Overview.write_overview?).to be true
+          contents = File.read("lib/fake_gem.rb")
+          expect(contents.scan(Overview::BANNER).size).to eq(1)
+          expect(contents).to include("# * Introduction")
+          expect(Overview.write_overview?).to be false
+        end
+      end
+
+      context "when Ruby code separates an old banner from the declaration" do
+        let(:main_lib) { "# #{Overview::BANNER}\n#\nKEEP_ME = 42\nmodule FakeGem\nend\n" }
+
+        it "preserves the intervening code" do
+          Overview.write_overview?
+          expect(File.read("lib/fake_gem.rb")).to include("KEEP_ME = 42")
+        end
+      end
+
       context "when there is no overview yet" do
         let(:main_lib) { main_lib_wo_overview }
 
