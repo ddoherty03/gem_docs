@@ -4,6 +4,7 @@
   - [Install the gem](#org430b4e8)
   - [Update Your `Rakefile`](#org0ba7944)
 - [Usage](#org3d657b9)
+  - [Check documentation setup: `rake docs:doctor`](#check-documentation-setup-rake-docsdoctor)
   - [Create a skeleton README.org file](#org5e884c4)
   - [Create a skeleton CHANGELOG.org file](#orgbfc3ca3)
   - [Add proper `#+PROPERTY` headers in `README.org`: `rake docs:headers`](#org6e4db88)
@@ -94,6 +95,24 @@ GemDocs.install
 
 # Usage
 
+
+## Check documentation setup: `rake docs:doctor`
+
+Run the advisory doctor before generating documentation:
+
+```sh
+bundle exec rake docs:doctor
+```
+
+The doctor suggests improvements for missing or empty configured overview sections, Ruby example headers, missing or stale version markers, missing or possibly stale Markdown exports, and YARD configuration and generated files. It uses `c.overview_headings` (by default, `["Introduction"]`); to use an existing top-level `Overview` section, configure:
+
+```ruby
+GemDocs.configure do |c|
+  c.overview_headings = ["Overview"]
+end
+```
+
+This is a read-only, advisory task with no generation prerequisites. It does not start Emacs or execute examples, and suggestions do not make the task fail. Header checks are static suggestions, not full Org validation: inherited and per-block settings may intentionally differ. READMEs without Ruby examples do not receive Ruby-header suggestions. Export freshness uses file timestamps; it does not prove that saved example results are current.
 
 <a id="org5e884c4"></a>
 

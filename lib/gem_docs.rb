@@ -285,6 +285,7 @@ module GemDocs
   require_relative "gem_docs/badge"
   require_relative "gem_docs/header"
   require_relative "gem_docs/skeleton"
+  require_relative "gem_docs/doctor"
   require_relative "gem_docs/tasks"
 
   README_ORG = "README.org"

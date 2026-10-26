@@ -15,6 +15,15 @@ module GemDocs
     end
 
     namespace :docs do
+      task :check_readme do
+        GemDocs::Emacs.check_readme_destination!
+      end
+
+      desc "Suggest documentation improvements without changing files or running examples"
+      task :doctor do
+        GemDocs::Doctor.run
+      end
+
       desc "Evaluate code blocks in README.org"
       task :tangle => ["docs:skeleton:readme"] do
         print "Executing code blocks in #{README_ORG} ... "
@@ -22,7 +31,7 @@ module GemDocs
       end
 
       desc "Export README.org → README.md"
-      task :export => [:badge, README_MD, CHANGELOG_MD]
+      task :export => [:check_readme, :badge, README_MD, CHANGELOG_MD]
 
       desc "Extract overview from README.org and embed in lib/<gem>.rb for ri/yard"
       task :overview => ["docs:skeleton:readme", README_ORG] do
@@ -30,7 +39,7 @@ module GemDocs
         if GemDocs::Overview.write_overview?
           puts "added"
         else
-          puts "already present"
+          puts "unchanged (already current or no matching overview)"
         end
       end
 
@@ -83,7 +92,16 @@ module GemDocs
       end
 
       desc "Run all documentation tasks (examples, readme, overview, yard, ri)"
-      task :all => ["docs:skeleton:readme", "docs:skeleton:changelog", :headers, :tangle, :export, :overview, :yard]
+      task :all => [
+        :check_readme,
+        "docs:skeleton:readme",
+        "docs:skeleton:changelog",
+        :headers,
+        :tangle,
+        :export,
+        :overview,
+        :yard
+      ]
     end
   end
 end
