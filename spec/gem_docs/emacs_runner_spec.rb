@@ -75,6 +75,43 @@ RSpec.describe GemDocs::Emacs do
       expect(Process).not_to have_received(:spawn)
     end
 
+    it 'protects handwritten Markdown before starting Emacs' do
+      File.write('README.org', "* Introduction\nReplacement.\n")
+      original = "# Handwritten README\nKeep this.\n"
+      File.write('README.md', original)
+
+      expect { described_class.export_readme }.to raise_error(GemDocs::Emacs::Error, /Refusing to overwrite/)
+      expect(File.read('README.md')).to eq(original)
+      expect(Process).not_to have_received(:spawn)
+    end
+
+    it 'does not treat a marker quoted later in the document as permission' do
+      File.write('README.md', "# Instructions\n#{described_class::README_MARKER}\n")
+      expect { described_class.check_readme_destination! }.to raise_error(GemDocs::Emacs::Error)
+    end
+
+    it 'protects an existing empty Markdown file' do
+      File.write('README.md', '')
+      expect { described_class.check_readme_destination! }.to raise_error(GemDocs::Emacs::Error)
+      expect(File.read('README.md')).to eq('')
+    end
+
+    it 'stops docs:all before creating a skeleton for a Markdown-only project' do
+      require 'rake'
+      previous = Rake.application
+      begin
+        File.write('README.md', '# Handwritten')
+        Rake.application = Rake::Application.new
+        GemDocs.install
+        expect { Rake::Task['docs:all'].invoke }.to raise_error(GemDocs::Emacs::Error, /Refusing to overwrite/)
+        expect(File).not_to exist('README.org')
+        expect(File).not_to exist('CHANGELOG.org')
+        expect(File.read('README.md')).to eq('# Handwritten')
+      ensure
+        Rake.application = previous
+      end
+    end
+
     it 'skips blocks disabled by inherited and local headers' do
       readme = <<~ORG
         #+PROPERTY: header-args:emacs-lisp :eval never
@@ -140,6 +177,7 @@ RSpec.describe GemDocs::Emacs do
         Dir.chdir('lib/nested') { described_class.export_readme }
 
         markdown = File.read('README.md')
+        expect(markdown).to start_with("#{described_class::README_MARKER}\n")
         expect(markdown).to include('[![CI](https://example.com/badge.svg)](https://example.com/workflow)')
         expect(markdown).to include('(+ 40 2)', '42')
         expect(File).not_to exist('CHANGELOG.org')
@@ -153,7 +191,21 @@ RSpec.describe GemDocs::Emacs do
         expect(File).not_to exist('README.org')
       end
 
+      it 'refreshes a marked README without duplicating the marker or honoring an alternate export path' do
+        File.write('README.org', "#+EXPORT_FILE_NAME: other.md\n* Introduction\nFresh text.\n")
+        File.write('other.md', 'Keep this other file')
+        File.write('README.md', "#{described_class::README_MARKER}\nOld text.\n")
+        2.times { described_class.export_readme }
+        markdown = File.read('README.md')
+        expect(markdown).to include('Fresh text.')
+        expect(markdown).not_to include('Old text.')
+        expect(markdown.scan(described_class::README_MARKER).size).to eq(1)
+        expect(File.read('other.md')).to eq('Keep this other file')
+      end
+
       it 'propagates evaluation errors during export' do
+        original = "#{described_class::README_MARKER}\nPrevious successful output.\n"
+        File.write('README.md', original)
         File.write('README.org', <<~ORG)
           #+begin_src emacs-lisp :eval yes :exports results
           (error "broken example")
@@ -161,6 +213,7 @@ RSpec.describe GemDocs::Emacs do
         ORG
         expect { described_class.export_readme }
           .to raise_error(GemDocs::Emacs::Error, /Export README.org failed/)
+        expect(File.read('README.md')).to eq(original)
       end
     end
   end

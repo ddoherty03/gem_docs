@@ -25,7 +25,7 @@ module GemDocs
         #
         #{overview.lines.map { |l| l.match?(/\A\s*\z/) ? '#' : "# #{l.rstrip}" }.join("\n")}
       RUBY
-      return false if old_comment == new_comment
+      return false if old_comment.rstrip == new_comment
 
       new_lib =
         if old_match
@@ -48,14 +48,12 @@ module GemDocs
     # the main library file. The Regex requires the comment to come immediately
     # before the `class <GemName>` or `module <GemName>` line, or it will not match.
     def self.overview_re
-      heads = GemDocs.config.overview_headings
-      re_str = "#\\s*" + Regexp.quote(BANNER) + ".*"
-      heads.each do |h|
-        re_str << "\\*\\s+#{Regexp.escape(h)}.*"
-      end
       repo = Repo.from_gemspec
-      re_str += "(?=\\n\\s*(?:class|module)\\s+#{Regexp.escape(repo.module_name)}\\b)"
-      Regexp.new(re_str, Regexp::MULTILINE | Regexp::IGNORECASE)
+      # Match only comment/blank lines, never Ruby code between the banner and
+      # declaration. This also recognizes legacy empty or duplicated banners.
+      %r{^\#[ ]#{Regexp.escape(BANNER)}[^\n]*
+        (?:\n(?:[ \t]*\#[^\n]*|[ \t]*))*
+        (?=\n(?:class|module)\s+#{Regexp.escape(repo.module_name)}\b)}ix
     end
 
     def self.present?
@@ -80,7 +78,7 @@ module GemDocs
         result = +''
         scanner = StringScanner.new(text)
         heads.each do |h|
-          if scanner.scan_until(/\n(?<head>\s*\*\s+#{Regexp.escape(h)})[^\n]*\n/)
+          if scanner.scan_until(/^(?<head>\* +#{Regexp.escape(h)})(?=[ \t\n]|\z)[^\n]*\n/)
             this_head = scanner.named_captures['head'] + "\n"
             body_start = scanner.pos
             body_end =
@@ -93,6 +91,8 @@ module GemDocs
             result << this_head + scanner.string[body_start..body_end]
           end
         end
+        return if result.empty?
+
         result.sub(/\A\n*/, '')
       end
     end
